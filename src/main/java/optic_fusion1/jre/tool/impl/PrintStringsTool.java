@@ -1,0 +1,165 @@
+package optic_fusion1.jre.tool.impl;
+
+import optic_fusion1.jre.tool.Tool;
+import static optic_fusion1.jre.util.Utils.checkFileExists;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+public class PrintStringsTool extends Tool {
+
+    private boolean normalize;
+    private boolean removeDuplicateStrings;
+
+    public PrintStringsTool() {
+        super("printstrings", "Prints every string in a .jar file. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+    }
+
+    @Override
+    public void run(List<String> args) {
+        if (args.isEmpty()) {
+            System.out.println("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+        }
+        if (args.contains("--normalize")) {
+            args.remove("--normalize");
+            normalize = true;
+        }
+        if (args.contains("--removeDuplicateStrings")) {
+            args.remove("--removeDuplicateStrings");
+            removeDuplicateStrings = true;
+        }
+        if (!args.get(0).equalsIgnoreCase("all")) {
+            File input = new File(args.get(0));
+            if (!input.getName().endsWith(".jar")) {
+                System.out.println(input.toPath() + " is not a jar file");
+                return;
+            }
+            if (!checkFileExists(input)) {
+                System.out.println(input.toPath() + " does not exist");
+                return;
+            }
+            loopFile(input);
+            return;
+        }
+        if (args.size() == 1) {
+            System.out.println("You did not enter enough arguments. Usage: printStrings all <directory_path>");
+            return;
+        }
+        File input = new File(args.get(1));
+        if (!checkFileExists(input)) {
+            System.out.println(input.toPath() + " does not exist");
+            return;
+        }
+        if (!input.isDirectory()) {
+            System.out.println(input.toPath() + " is not a directory");
+            return;
+        }
+        for (File file : input.listFiles()) {
+            loopFile(file);
+        }
+    }
+
+    private void loopFile(File inputFile) {
+        if (inputFile.isDirectory()) {
+            for (File file : inputFile.listFiles()) {
+                loopFile(file);
+            }
+            return;
+        }
+        if (!inputFile.getName().endsWith(".jar")) {
+            System.out.println(inputFile.toPath() + " is not a jar file");
+            return;
+        }
+        try (ZipFile zipFile = new ZipFile(inputFile)) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) entries.nextElement();
+                if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
+                    continue;
+                }
+                InputStream inputStream = zipFile.getInputStream(entry);
+                if (inputStream == null) {
+                    continue;
+                }
+                ClassReader classReader = new ClassReader(inputStream);
+                ClassNode classNode = new ClassNode();
+                classReader.accept(classNode, 0);
+                printStrings(classNode);
+            }
+        } catch (ZipException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printStrings(ClassNode classNode) {
+        List<String> strings = new ArrayList<>();
+        if (classNode.methods.isEmpty()) {
+            System.out.println(classNode.name + " has no methods. Skipping");
+            return;
+        }
+        if (classNode.fields.isEmpty()) {
+            System.out.println(classNode.name + " has no fields. Skipping");
+        }
+        for (MethodNode method : classNode.methods) {
+            handleMethod(classNode, method);
+        }
+        for (FieldNode field : classNode.fields) {
+            handleField(classNode, field);
+        }
+    }
+
+    private void handleField(ClassNode classNode, FieldNode fieldNode) {
+        Object value = fieldNode.value;
+        if (!(value instanceof String)) {
+            return;
+        }
+        String string = (String) fieldNode.value;
+        if (normalize) {
+            string = string.toLowerCase().trim();
+        }
+        string = classNode.name + "#" + fieldNode.name + ": " + string;
+        System.out.println(string);
+    }
+
+    private void handleMethod(ClassNode classNode, MethodNode methodNode) {
+        List<String> strings = new ArrayList<>();
+        for (AbstractInsnNode instruction : methodNode.instructions) {
+            if (!(instruction instanceof LdcInsnNode ldcInsnNode)) {
+                continue;
+            }
+            if (!(ldcInsnNode.cst instanceof String)) {
+                continue;
+            }
+            String string = ldcInsnNode.cst.toString();
+            if (normalize) {
+                string = string.toLowerCase().trim();
+            }
+            string = classNode.name + "#" + methodNode.name + ": " + string;
+            if (removeDuplicateStrings) {
+                if (strings.contains(string)) {
+                    continue;
+                }
+                System.out.println(string);
+                strings.add(string);
+                continue;
+            }
+            System.out.println(string);
+        }
+    }
+
+}
