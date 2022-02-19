@@ -8,7 +8,6 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,13 +18,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-public class PrintStringsTool extends Tool {
+public class StringsTool extends Tool {
 
     private boolean normalize;
     private boolean removeDuplicateStrings;
 
-    public PrintStringsTool() {
-        super("printstrings", "Prints every string in a .jar file. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+    public StringsTool() {
+        super("strings", "Prints every string in a .jar or .class file. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
     }
 
     @Override
@@ -37,21 +36,25 @@ public class PrintStringsTool extends Tool {
             args.remove("--normalize");
             normalize = true;
         }
-        if (args.contains("--removeDuplicateStrings")) {
-            args.remove("--removeDuplicateStrings");
+        if (args.contains("--removeDuplicates")) {
+            args.remove("--removeDuplicates");
             removeDuplicateStrings = true;
         }
         if (!args.get(0).equalsIgnoreCase("all")) {
             File input = new File(args.get(0));
-            if (!input.getName().endsWith(".jar")) {
-                System.out.println(input.toPath() + " is not a jar file");
-                return;
-            }
             if (!checkFileExists(input)) {
                 System.out.println(input.toPath() + " does not exist");
                 return;
             }
-            loopFile(input);
+            if (!input.getName().endsWith(".jar") || !input.getName().endsWith(".class")) {
+                System.out.println(input.toPath() + " is not a jar file");
+                return;
+            }
+            if (input.isDirectory()) {
+                System.out.println(input.toPath() + " is a directory");
+                return;
+            }
+            methodOne(input);
             return;
         }
         if (args.size() == 1) {
@@ -68,14 +71,14 @@ public class PrintStringsTool extends Tool {
             return;
         }
         for (File file : input.listFiles()) {
-            loopFile(file);
+            methodOne(file);
         }
     }
 
-    private void loopFile(File inputFile) {
+    private void methodOne(File inputFile) {
         if (inputFile.isDirectory()) {
             for (File file : inputFile.listFiles()) {
-                loopFile(file);
+                methodOne(file);
             }
             return;
         }
@@ -129,10 +132,10 @@ public class PrintStringsTool extends Tool {
             return;
         }
         String string = (String) fieldNode.value;
+        string = classNode.name + "#" + fieldNode.name + ": " + string;
         if (normalize) {
             string = string.toLowerCase().trim();
         }
-        string = classNode.name + "#" + fieldNode.name + ": " + string;
         System.out.println(string);
     }
 

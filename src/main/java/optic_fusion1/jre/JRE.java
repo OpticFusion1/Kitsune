@@ -4,8 +4,8 @@ import optic_fusion1.jre.shellparser.ParseException;
 import optic_fusion1.jre.shellparser.ShellParser;
 import optic_fusion1.jre.tool.Tool;
 import optic_fusion1.jre.tool.ToolManager;
-import optic_fusion1.jre.tool.impl.PrintStringsTool;
-
+import optic_fusion1.jre.tool.impl.analyze.AnalyzeTool;
+import optic_fusion1.jre.tool.impl.StringsTool;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,7 +18,7 @@ public class JRE extends Thread {
     @Override
     public void run() {
         init();
-        registerTools(new PrintStringsTool());
+        registerTools(new StringsTool(), new AnalyzeTool());
         handleCLI();
     }
 
