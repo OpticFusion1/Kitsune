@@ -19,6 +19,7 @@ public class JRE extends Thread {
     public void run() {
         init();
         registerTools(new StringsTool(), new AnalyzeTool());
+        System.out.println("Program loaded. Enter a command:");
         handleCLI();
     }
 
