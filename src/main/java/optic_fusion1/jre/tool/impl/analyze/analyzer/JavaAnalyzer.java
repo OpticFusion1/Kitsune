@@ -1,7 +1,6 @@
 package optic_fusion1.jre.tool.impl.analyze.analyzer;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.commons.Method;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -23,6 +22,7 @@ public class JavaAnalyzer {
     private static final ThreadAnalyzer THREAD_ANALYZER = new ThreadAnalyzer();
     private static final ZipEntryAnalyzer ZIP_ENTRY_ANALYZER = new ZipEntryAnalyzer();
     private static final RuntimeAnalyzer RUNTIME_ANALYZER = new RuntimeAnalyzer();
+    private static final MethodAnalyzer METHOD_ANALYZER = new MethodAnalyzer();
 
     public void analyze(File file) {
         System.out.println("Gathering all class nodes in " + file.toPath());
@@ -53,6 +53,9 @@ public class JavaAnalyzer {
                     }
                     if (owner.equals("java/lang/Runtime")) {
                         RUNTIME_ANALYZER.analyze(classNode, methodNode, method);
+                    }
+                    if (owner.equals("java/lang/reflect/Method")) {
+                        METHOD_ANALYZER.analyze(classNode, methodNode, method);
                     }
                 }
             }

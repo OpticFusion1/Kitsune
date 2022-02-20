@@ -32,29 +32,3 @@ public class AnalyzeTool extends Tool {
         JAVA_ANALYZER.analyze(input);
     }
 }
-/*
-
-    private void processReflectionStuff(ClassNode classNode, MethodNode methodNode, MethodInsnNode method) {
-        if (method.name.equals("invoke") && method.desc.equals("(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;")) {
-            log(classNode, method, "Method#invoke");
-        }
-    }
-
-    private void processInternetStuff(ClassNode classNode, MethodNode methodNode, MethodInsnNode method) {
-        if (method.owner.equals("java/net/URL") && method.desc.equals("(Ljava/lang/String;)V")) {
-            log(classNode, method, "URL");
-            /*
-            AbstractInsnNode minus1 = method.getPrevious();
-            if (minus1 instanceof LdcInsnNode ldc) {
-                if (ldc.cst instanceof String) {
-                    log(classNode, )
-                }
-            }
-            */
-        //}
-   // }
-
-    //private void printOutput() {
-//
- //   }
-//}
