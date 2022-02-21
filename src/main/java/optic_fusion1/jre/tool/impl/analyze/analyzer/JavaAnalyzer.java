@@ -11,18 +11,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 public class JavaAnalyzer {
 
-    private static final FileAnalyzer FILE_ANALYZER = new FileAnalyzer();
-    private static final ThreadAnalyzer THREAD_ANALYZER = new ThreadAnalyzer();
-    private static final ZipEntryAnalyzer ZIP_ENTRY_ANALYZER = new ZipEntryAnalyzer();
-    private static final RuntimeAnalyzer RUNTIME_ANALYZER = new RuntimeAnalyzer();
-    private static final MethodAnalyzer METHOD_ANALYZER = new MethodAnalyzer();
+    private static final HashMap<String, Analyzer> ANALYZERS = new HashMap<>();
+
+    public JavaAnalyzer() {
+        registerAnalyzers();
+    }
+
+    protected void registerAnalyzers() {
+        registerAnalyzer("java/io/File", new FileAnalyzer());
+        registerAnalyzer("java/lang/Thread", new ThreadAnalyzer());
+        registerAnalyzer("java/util/zip/ZipEntry", new ZipEntryAnalyzer());
+        registerAnalyzer("java/lang/Runtime", new RuntimeAnalyzer());
+        registerAnalyzer("java/lang/reflect/Method", new MethodAnalyzer());
+        registerAnalyzer("java/net/URL", new URLAnalyzer());
+    }
+
+    protected void registerAnalyzer(String methodInsnNodeOwner, Analyzer analyzer) {
+        ANALYZERS.putIfAbsent(methodInsnNodeOwner, analyzer);
+    }
 
     public void analyze(File file) {
         System.out.println("Gathering all class nodes in " + file.toPath());
@@ -32,9 +45,7 @@ public class JavaAnalyzer {
             return;
         }
         System.out.println("Processing class nodes");
-        classNodes.forEach((node)->{
-            processClassNode(node);
-        });
+        classNodes.forEach(this::processClassNode);
     }
 
     private void processClassNode(ClassNode classNode) {
@@ -42,20 +53,9 @@ public class JavaAnalyzer {
             for (AbstractInsnNode instruction : methodNode.instructions) {
                 if (instruction instanceof MethodInsnNode method) {
                     String owner = method.owner;
-                    if (owner.equals("java/io/File")) {
-                        FILE_ANALYZER.analyze(classNode, methodNode, method);
-                    }
-                    if (owner.equals("java/lang/Thread")) {
-                        THREAD_ANALYZER.analyze(classNode, methodNode, method);
-                    }
-                    if (owner.equals("java/util/zip/ZipEntry")) {
-                        ZIP_ENTRY_ANALYZER.analyze(classNode, methodNode, method);
-                    }
-                    if (owner.equals("java/lang/Runtime")) {
-                        RUNTIME_ANALYZER.analyze(classNode, methodNode, method);
-                    }
-                    if (owner.equals("java/lang/reflect/Method")) {
-                        METHOD_ANALYZER.analyze(classNode, methodNode, method);
+                    Analyzer analyzer = ANALYZERS.get(owner);
+                    if (analyzer != null) {
+                        analyzer.analyze(classNode, methodNode, method);
                     }
                 }
             }
@@ -67,7 +67,7 @@ public class JavaAnalyzer {
         try(ZipFile zipFile = new ZipFile(file)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
-                ZipEntry entry = (ZipEntry) entries.nextElement();
+                ZipEntry entry = entries.nextElement();
                 if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
                     continue;
                 }
@@ -80,8 +80,6 @@ public class JavaAnalyzer {
                 classReader.accept(classNode, 0);
                 classNodes.add(classNode);
             }
-        } catch (ZipException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

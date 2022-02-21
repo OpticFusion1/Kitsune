@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>JavaReverseEngineer</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 
     <build>
         <resources>
@@ -23,7 +23,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Built-By></Built-By>
+                            <Built-By/>
                         </manifestEntries>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>

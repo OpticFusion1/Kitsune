@@ -6,18 +6,24 @@ import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class ZipEntryAnalyzer extends Analyzer {
+public class URLAnalyzer extends Analyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "ZipEntry Initialized");
+                log(classNode, methodNode, methodInsnNode, "URL Created");
                 return;
             }
-            String zipEntryName = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Creates a ZipEntry called '" + zipEntryName + "'");
+            String url = (String) ((LdcInsnNode) minus1).cst;
+            log(classNode, methodNode, methodInsnNode, "Created a URL pointing to '" + url + "'");
+            return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "openConnection", "()Ljava/net/URLConnection;")) {
+            log(classNode, methodNode, methodInsnNode, "URL Connection Opened");
+            return;
         }
     }
+
 }

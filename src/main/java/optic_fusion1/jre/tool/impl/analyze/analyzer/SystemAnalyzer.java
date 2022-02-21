@@ -1,25 +1,23 @@
 package optic_fusion1.jre.tool.impl.analyze.analyzer;
 
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class RuntimeAnalyzer extends Analyzer {
+public class SystemAnalyzer extends Analyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (isMethodInsnNodeCorrect(methodInsnNode, "exec", "(Ljava/lang/String;)Ljava/lang/Process;")) {
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "Runtime Exec");
+                log(classNode, methodNode, methodInsnNode, "Getting Environment Variable");
                 return;
             }
-            String execCommand = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Runs the exec command '" + execCommand + "'");
+            String varName = (String) ((LdcInsnNode) minus1).cst;
+            log(classNode, methodNode, methodInsnNode, "Gets the Environment Variable '" + varName + "'");
         }
     }
-
 }

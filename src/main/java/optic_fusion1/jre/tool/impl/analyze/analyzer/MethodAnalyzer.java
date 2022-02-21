@@ -8,7 +8,7 @@ public class MethodAnalyzer extends Analyzer{
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (methodInsnNode.name.equals("invoke") && methodInsnNode.desc.equals("(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;")) {
+        if (isMethodInsnNodeCorrect(methodInsnNode, "invoke", "(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;")) {
             log(classNode, methodNode, methodInsnNode, "Method#invoke");
         }
     }
