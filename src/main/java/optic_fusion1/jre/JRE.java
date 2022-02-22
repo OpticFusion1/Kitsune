@@ -9,7 +9,7 @@ import optic_fusion1.jre.tool.impl.StringsTool;
 import java.util.List;
 import java.util.Scanner;
 
-public class JRE extends Thread {
+public class JRE implements Runnable {
 
     private static final ToolManager TOOL_MANAGER = new ToolManager();
     private static final Scanner SCANNER = new Scanner(System.in);
