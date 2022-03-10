@@ -1,5 +1,6 @@
 package optic_fusion1.jre.tool.impl.analyze.analyzer;
 
+import static optic_fusion1.jre.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LdcInsnNode;
@@ -47,8 +48,8 @@ public class FileAnalyzer extends Analyzer {
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "list", "()[Ljava/lang/String;")
-        || isMethodInsnNodeCorrect(methodInsnNode, "listFiles", "()[Ljava/io/File;")
-        || isMethodInsnNodeCorrect(methodInsnNode, "listRoots", "()[Ljava/io/File;")) {
+                || isMethodInsnNodeCorrect(methodInsnNode, "listFiles", "()[Ljava/io/File;")
+                || isMethodInsnNodeCorrect(methodInsnNode, "listRoots", "()[Ljava/io/File;")) {
             log(classNode, methodNode, methodInsnNode, "Lists Files");
             return;
         }

@@ -46,7 +46,7 @@ public class StringsTool extends Tool {
                 System.out.println(input.toPath() + " does not exist");
                 return;
             }
-            if (!input.getName().endsWith(".jar") || !input.getName().endsWith(".class")) {
+            if (!input.getName().endsWith(".jar") && !input.getName().endsWith(".class")) {
                 System.out.println(input.toPath() + " is not a jar file");
                 return;
             }
@@ -54,7 +54,7 @@ public class StringsTool extends Tool {
                 System.out.println(input.toPath() + " is a directory");
                 return;
             }
-            methodOne(input);
+            processFile(input);
             return;
         }
         if (args.size() == 1) {
@@ -71,14 +71,14 @@ public class StringsTool extends Tool {
             return;
         }
         for (File file : input.listFiles()) {
-            methodOne(file);
+            processFile(file);
         }
     }
 
-    private void methodOne(File inputFile) {
+    private void processFile(File inputFile) {
         if (inputFile.isDirectory()) {
             for (File file : inputFile.listFiles()) {
-                methodOne(file);
+                processFile(file);
             }
             return;
         }
@@ -86,7 +86,7 @@ public class StringsTool extends Tool {
             System.out.println(inputFile.toPath() + " is not a jar file");
             return;
         }
-        try (ZipFile zipFile = new ZipFile(inputFile)) {
+        try ( ZipFile zipFile = new ZipFile(inputFile)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -110,7 +110,6 @@ public class StringsTool extends Tool {
     }
 
     private void printStrings(ClassNode classNode) {
-        List<String> strings = new ArrayList<>();
         if (classNode.methods.isEmpty()) {
             System.out.println(classNode.name + " has no methods. Skipping");
             return;

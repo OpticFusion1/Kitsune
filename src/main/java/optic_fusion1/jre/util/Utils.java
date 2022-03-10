@@ -1,10 +1,11 @@
 package optic_fusion1.jre.util;
 
 import static optic_fusion1.jre.util.Validate.isNotNull;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 public final class Utils {
 
@@ -17,13 +18,12 @@ public final class Utils {
         return file.exists();
     }
 
-    public String getMethodReturnTypes(final String desc) {
-        final Type[] types = Type.getArgumentTypes(desc);
-        final List<String> strTypes = new LinkedList<String>();
-        for (final Type type : types) {
-            strTypes.add(type.getClassName());
+    public static void log(ClassNode classNode, MethodNode methodNode, MethodInsnNode method, String type) {
+        if (method.getPrevious() == null || method.getPrevious().getPrevious() == null) {
+            return;
         }
-        return String.join(", ", strTypes);
+        AbstractInsnNode minus2 = method.getPrevious().getPrevious();
+        System.out.println(classNode.name + "#" + methodNode.name + ": " + type);
     }
 
 }

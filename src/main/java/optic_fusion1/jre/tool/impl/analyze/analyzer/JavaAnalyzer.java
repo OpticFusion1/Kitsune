@@ -64,7 +64,7 @@ public class JavaAnalyzer {
 
     private List<ClassNode> getClassNodesFromFile(File file) {
         List<ClassNode> classNodes = new ArrayList<>();
-        try(ZipFile zipFile = new ZipFile(file)) {
+        try ( ZipFile zipFile = new ZipFile(file)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();

@@ -1,5 +1,6 @@
 package optic_fusion1.jre.tool.impl.analyze.analyzer;
 
+import static optic_fusion1.jre.util.Utils.log;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;

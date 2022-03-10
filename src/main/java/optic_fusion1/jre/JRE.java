@@ -18,9 +18,6 @@ public class JRE implements Runnable {
     @Override
     public void run() {
         init();
-        registerTools(new StringsTool(), new AnalyzeTool());
-        System.out.println("Program loaded. Enter a command:");
-        handleCLI();
     }
 
     private void handleCLI() {
@@ -46,9 +43,12 @@ public class JRE implements Runnable {
 
     private void init() {
         running = true;
+        registerTools(new StringsTool(), new AnalyzeTool());
+        System.out.println("Program loaded. Enter a command:");
+        handleCLI();
     }
 
-    private void registerTools(Tool...tools) {
+    private void registerTools(Tool... tools) {
         for (Tool tool : tools) {
             TOOL_MANAGER.addTool(tool);
         }
