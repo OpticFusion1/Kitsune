@@ -79,7 +79,7 @@ public class CustomLogger {
                     e.printStackTrace();
                 }
             }
-        }, "AntiMalware/CustomLogger");
+        }, "CustomLogger");
         thread.setDaemon(true);
         thread.start();
     }
@@ -181,7 +181,7 @@ public class CustomLogger {
         String message = buildLogMessage(string, level, null);
         toLog.offer(message);
         if (logToConsole) {
-            outputStream.println("[AntiMalware] " + message);
+            outputStream.println("[RE] " + message);
         }
     }
 
