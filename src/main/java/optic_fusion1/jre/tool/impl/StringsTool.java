@@ -33,9 +33,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+import optic_fusion1.jre.logging.CustomLogger;
 
 public class StringsTool extends Tool {
 
+    private static final CustomLogger LOGGER = new CustomLogger();
     private boolean normalize;
     private boolean removeDuplicateStrings;
 
@@ -46,7 +48,7 @@ public class StringsTool extends Tool {
     @Override
     public void run(List<String> args) {
         if (args.isEmpty()) {
-            System.out.println("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+            LOGGER.info("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
         }
         if (args.contains("--normalize")) {
             args.remove("--normalize");
@@ -59,35 +61,41 @@ public class StringsTool extends Tool {
         if (!args.get(0).equalsIgnoreCase("all")) {
             File input = new File(args.get(0));
             if (!checkFileExists(input)) {
-                System.out.println(input.toPath() + " does not exist");
+                LOGGER.info(input.toPath() + " does not exist");
                 return;
             }
             if (!input.getName().endsWith(".jar") && !input.getName().endsWith(".class")) {
-                System.out.println(input.toPath() + " is not a jar file");
+                LOGGER.info(input.toPath() + " is not a jar file");
                 return;
             }
             if (input.isDirectory()) {
-                System.out.println(input.toPath() + " is a directory");
+                LOGGER.info(input.toPath() + " is a directory");
                 return;
             }
             processFile(input);
             return;
         }
         if (args.size() == 1) {
-            System.out.println("You did not enter enough arguments. Usage: printStrings all <directory_path>");
+            LOGGER.info("You did not enter enough arguments. Usage: printStrings all <directory_path>");
             return;
         }
         File input = new File(args.get(1));
         if (!checkFileExists(input)) {
-            System.out.println(input.toPath() + " does not exist");
+            LOGGER.info(input.toPath() + " does not exist");
             return;
         }
         if (!input.isDirectory()) {
-            System.out.println(input.toPath() + " is not a directory");
+            LOGGER.info(input.toPath() + " is not a directory");
             return;
         }
         for (File file : input.listFiles()) {
-            processFile(file);
+            LOGGER.info("\n\n\n\n");
+            try {
+                processFile(file);
+            } catch (Exception e) {
+                continue;
+            }
+            LOGGER.info("\n\n\n\n");
         }
     }
 
@@ -99,10 +107,10 @@ public class StringsTool extends Tool {
             return;
         }
         if (!inputFile.getName().endsWith(".jar")) {
-            System.out.println(inputFile.toPath() + " is not a jar file");
+            LOGGER.info(inputFile.toPath() + " is not a jar file");
             return;
         }
-        try ( ZipFile zipFile = new ZipFile(inputFile)) {
+        try (ZipFile zipFile = new ZipFile(inputFile)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -119,19 +127,19 @@ public class StringsTool extends Tool {
                 printStrings(classNode);
             }
         } catch (ZipException e) {
-            e.printStackTrace();
+            LOGGER.exception(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.exception(e);
         }
     }
 
     private void printStrings(ClassNode classNode) {
         if (classNode.methods.isEmpty()) {
-            System.out.println(classNode.name + " has no methods. Skipping");
+            LOGGER.info(classNode.name + " has no methods. Skipping");
             return;
         }
         if (classNode.fields.isEmpty()) {
-            System.out.println(classNode.name + " has no fields. Skipping");
+            LOGGER.info(classNode.name + " has no fields. Skipping");
         }
         for (MethodNode method : classNode.methods) {
             handleMethod(classNode, method);
@@ -151,7 +159,7 @@ public class StringsTool extends Tool {
         if (normalize) {
             string = string.toLowerCase().trim();
         }
-        System.out.println(string);
+        LOGGER.info(string);
     }
 
     private void handleMethod(ClassNode classNode, MethodNode methodNode) {
@@ -163,20 +171,20 @@ public class StringsTool extends Tool {
             if (!(ldcInsnNode.cst instanceof String)) {
                 continue;
             }
-            String string = ldcInsnNode.cst.toString();
+            String ldcString = ldcInsnNode.cst.toString();
             if (normalize) {
-                string = string.toLowerCase().trim();
+                ldcString = ldcString.toLowerCase().trim();
             }
-            string = classNode.name + "#" + methodNode.name + ": " + string;
+            String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString;
             if (removeDuplicateStrings) {
-                if (strings.contains(string)) {
+                if (strings.contains(finalString)) {
                     continue;
                 }
-                System.out.println(string);
-                strings.add(string);
+                LOGGER.info(finalString);
+                strings.add(finalString);
                 continue;
             }
-            System.out.println(string);
+            LOGGER.info(finalString);
         }
     }
 

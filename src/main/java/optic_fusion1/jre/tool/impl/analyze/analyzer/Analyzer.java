@@ -34,10 +34,7 @@ public abstract class Analyzer {
         if (!(node instanceof LdcInsnNode ldcIsnNode)) {
             return false;
         }
-        if (!(ldcIsnNode.cst instanceof String)) {
-            return false;
-        }
-        return true;
+        return ldcIsnNode.cst instanceof String;
     }
 
 }

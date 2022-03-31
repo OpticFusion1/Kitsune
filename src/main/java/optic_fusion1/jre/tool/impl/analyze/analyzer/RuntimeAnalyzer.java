@@ -36,6 +36,9 @@ public class RuntimeAnalyzer extends Analyzer {
             String execCommand = (String) ((LdcInsnNode) minus1).cst;
             log(classNode, methodNode, methodInsnNode, "Runs the exec command '" + execCommand + "'");
         }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getRuntime", "()Ljava/lang/Runtime;")) {
+            log(classNode, methodNode, methodInsnNode, "Gets Runtime instance");
+        }
     }
 
 }

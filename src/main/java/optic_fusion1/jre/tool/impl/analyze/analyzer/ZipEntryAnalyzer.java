@@ -37,4 +37,5 @@ public class ZipEntryAnalyzer extends Analyzer {
             log(classNode, methodNode, methodInsnNode, "Creates a ZipEntry called '" + zipEntryName + "'");
         }
     }
+
 }

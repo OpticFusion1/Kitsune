@@ -46,6 +46,13 @@ public class JavaAnalyzer {
         registerAnalyzer("java/lang/Runtime", new RuntimeAnalyzer());
         registerAnalyzer("java/lang/reflect/Method", new MethodAnalyzer());
         registerAnalyzer("java/net/URL", new URLAnalyzer());
+        registerAnalyzer("java/io/BufferedInputStream", new StreamAnalyzer("BufferedInputStream"));
+        registerAnalyzer("java/io/FileInputStream", new StreamAnalyzer("FileInputStream"));
+        registerAnalyzer("java/io/FileOutputStream", new StreamAnalyzer("FileOutputStream"));
+        registerAnalyzer("java/io/ObjectOutputStream", new StreamAnalyzer("ObjectOutputStream"));
+        registerAnalyzer("java/sql/Connection", new SQLAnalyzer("Connection")); 
+        registerAnalyzer("java/sql/DriverManager", new SQLAnalyzer("DriverManager"));
+        registerAnalyzer("java/lang/Class", new ClassAnalyzer());
     }
 
     protected void registerAnalyzer(String methodInsnNodeOwner, Analyzer analyzer) {
