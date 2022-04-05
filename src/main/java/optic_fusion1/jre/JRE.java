@@ -24,11 +24,13 @@ import optic_fusion1.jre.tool.impl.analyze.AnalyzeTool;
 import optic_fusion1.jre.tool.impl.StringsTool;
 import java.util.List;
 import java.util.Scanner;
+import optic_fusion1.jre.logging.CustomLogger;
 
 public class JRE implements Runnable {
 
     private static final ToolManager TOOL_MANAGER = new ToolManager();
     private static final Scanner SCANNER = new Scanner(System.in);
+    public static final CustomLogger LOGGER = new CustomLogger();
     private boolean running;
 
     @Override
@@ -41,18 +43,18 @@ public class JRE implements Runnable {
             try {
                 List<String> args = ShellParser.parseString(SCANNER.nextLine());
                 if (args.isEmpty()) {
-                    System.out.println("You did not enter any arguments");
+                    LOGGER.warn("You did not enter any arguments");
                     continue;
                 }
                 Tool tool = TOOL_MANAGER.getTool(args.get(0));
                 if (tool == null) {
-                    System.out.println(args.get(0) + " is not a valid tool");
+                    LOGGER.warn(args.get(0) + " is not a valid tool");
                     continue;
                 }
                 args.remove(0);
                 tool.run(args);
             } catch (ParseException e) {
-                e.printStackTrace();
+                LOGGER.exception(e);
             }
         }
     }
@@ -60,7 +62,7 @@ public class JRE implements Runnable {
     private void init() {
         running = true;
         registerTools(new StringsTool(), new AnalyzeTool());
-        System.out.println("Program loaded. Enter a command:");
+        LOGGER.info("Program loaded. Enter a command:");
         handleCLI();
     }
 

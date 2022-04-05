@@ -18,6 +18,7 @@ package optic_fusion1.jre.shellparser;
 
 import java.util.ArrayList;
 import java.util.List;
+import static optic_fusion1.jre.JRE.LOGGER;
 import optic_fusion1.jre.shellparser.state.StartState;
 
 public final class ShellParser {
@@ -33,7 +34,7 @@ public final class ShellParser {
         try {
             return parseString(string);
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.exception(e);
             return null;
         }
     }

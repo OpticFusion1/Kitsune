@@ -28,18 +28,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-import optic_fusion1.jre.logging.CustomLogger;
+import static optic_fusion1.jre.JRE.LOGGER;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.objectweb.asm.tree.MethodInsnNode;
 
 public class StringsTool extends Tool {
 
-    private static final CustomLogger LOGGER = new CustomLogger();
     private boolean normalize;
     private boolean removeDuplicateStrings;
+    // TODO: Add support for different hashes
+    private boolean showSha1Hash;
 
     public StringsTool() {
         super("strings", "Prints every string in a .jar or .class file. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
@@ -47,6 +51,7 @@ public class StringsTool extends Tool {
 
     @Override
     public void run(List<String> args) {
+        // TODO: Add better arg handling
         if (args.isEmpty()) {
             LOGGER.info("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
         }
@@ -57,6 +62,10 @@ public class StringsTool extends Tool {
         if (args.contains("--removeDuplicates")) {
             args.remove("--removeDuplicates");
             removeDuplicateStrings = true;
+        }
+        if (args.contains("--showSHA1Hash")) {
+            args.remove("--showSHA1Hash");
+            showSha1Hash = true;
         }
         if (!args.get(0).equalsIgnoreCase("all")) {
             File input = new File(args.get(0));
@@ -171,20 +180,32 @@ public class StringsTool extends Tool {
             if (!(ldcInsnNode.cst instanceof String)) {
                 continue;
             }
+
             String ldcString = ldcInsnNode.cst.toString();
+            AbstractInsnNode minus1 = instruction.getPrevious();
+            // TODO: Move Base64 to a general deobfuscation tool
             if (normalize) {
                 ldcString = ldcString.toLowerCase().trim();
             }
-            String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString;
+            String decodedString = "";
+            if (minus1 instanceof MethodInsnNode methodInsnNode && methodInsnNode.owner.equals("java/util/Base64")) {
+                decodedString = new String(Base64.getDecoder().decode(ldcString));
+            }
+            // TODO: Move Base64 to a general deobfuscation tool
+            String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString + (decodedString.isBlank() ? "" : " Decoded: " + decodedString);
+            String sha1Hash = "";
+            if (showSha1Hash) {
+                sha1Hash = DigestUtils.sha1Hex(ldcString);
+            }
             if (removeDuplicateStrings) {
                 if (strings.contains(finalString)) {
                     continue;
                 }
-                LOGGER.info(finalString);
+                LOGGER.info(finalString + (showSha1Hash ? ": " + sha1Hash : ""));
                 strings.add(finalString);
                 continue;
             }
-            LOGGER.info(finalString);
+            LOGGER.info(finalString + (showSha1Hash ? ": " + sha1Hash : ""));
         }
     }
 

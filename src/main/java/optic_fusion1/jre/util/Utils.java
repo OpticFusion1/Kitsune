@@ -17,11 +17,11 @@
 package optic_fusion1.jre.util;
 
 import static optic_fusion1.jre.util.Validate.isNotNull;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
+import static optic_fusion1.jre.JRE.LOGGER;
 
 public final class Utils {
 
@@ -38,8 +38,7 @@ public final class Utils {
         if (method.getPrevious() == null || method.getPrevious().getPrevious() == null) {
             return;
         }
-        AbstractInsnNode minus2 = method.getPrevious().getPrevious();
-        System.out.println(classNode.name + "#" + methodNode.name + ": " + type);
+        LOGGER.info(classNode.name + "#" + methodNode.name + ": " + type);
     }
 
 }
