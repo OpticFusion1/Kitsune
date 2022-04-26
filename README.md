@@ -1,4 +1,4 @@
-# JavaReverseEngineer
+# Kitsune
 A program to help with reverse engineering java files
 REQUIRES Java 17
 
