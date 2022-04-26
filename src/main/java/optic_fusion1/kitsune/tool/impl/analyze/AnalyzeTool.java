@@ -17,7 +17,7 @@
 package optic_fusion1.kitsune.tool.impl.analyze;
 
 import optic_fusion1.kitsune.tool.Tool;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.JavaAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.JarAnalyzer;
 import static optic_fusion1.kitsune.util.Utils.checkFileExists;
 import java.io.File;
 import java.util.List;
@@ -25,7 +25,7 @@ import static optic_fusion1.kitsune.Kitsune.LOGGER;
 
 public class AnalyzeTool extends Tool {
 
-    private static final JavaAnalyzer JAVA_ANALYZER = new JavaAnalyzer();
+    private static final JarAnalyzer JAVA_ANALYZER = new JarAnalyzer();
 
     public AnalyzeTool() {
         super("analyze", "Analyzes a jar or class and provides a detailed report");

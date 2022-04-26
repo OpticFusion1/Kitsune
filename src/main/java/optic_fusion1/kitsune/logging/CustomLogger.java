@@ -181,7 +181,7 @@ public class CustomLogger {
         String message = buildLogMessage(string, level, null);
         toLog.offer(message);
         if (logToConsole) {
-            outputStream.println("[RE] " + message);
+            outputStream.println("[Kitsune] " + message);
         }
     }
 

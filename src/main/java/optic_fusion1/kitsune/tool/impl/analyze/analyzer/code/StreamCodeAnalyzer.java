@@ -14,27 +14,30 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package optic_fusion1.kitsune.tool.impl.analyze.analyzer;
+package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
 import static optic_fusion1.kitsune.util.Utils.log;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class SystemAnalyzer extends Analyzer {
+public class StreamCodeAnalyzer extends CodeAnalyzer {
+
+    private String streamName;
+
+    public StreamCodeAnalyzer(String streamName) {
+        this.streamName = streamName;
+    }
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
-            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
-            if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "Getting Environment Variable");
-                return;
-            }
-            String varName = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Gets the Environment Variable '" + varName + "'");
+        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/File;)V")) {
+            log(classNode, methodNode, methodInsnNode, "Creates a " + streamName);
+            return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/InputStream;)V")) {
+            log(classNode, methodNode, methodInsnNode, "Creates a " + streamName);
         }
     }
+
 }

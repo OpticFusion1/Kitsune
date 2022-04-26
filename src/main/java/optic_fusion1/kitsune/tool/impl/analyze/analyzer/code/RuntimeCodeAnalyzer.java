@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package optic_fusion1.kitsune.tool.impl.analyze.analyzer;
+package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -23,7 +23,7 @@ import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class RuntimeAnalyzer extends Analyzer {
+public class RuntimeCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {

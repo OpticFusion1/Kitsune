@@ -6,7 +6,7 @@
 
     <groupId>optic_fusion1</groupId>
     <artifactId>Kitsune</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 
     <build>
         <resources>
@@ -37,7 +37,7 @@
                     <finalName>${project.artifactId}</finalName>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>optic_fusion1.jre.Main</mainClass>
+                            <mainClass>optic_fusion1.kitsune.Main</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>
@@ -107,7 +107,7 @@
     </dependencies>
 
     <properties>
-        <project.asmVer>9.2</project.asmVer>
+        <project.asmVer>9.3</project.asmVer>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
