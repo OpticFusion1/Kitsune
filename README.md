@@ -4,7 +4,7 @@ Kitsune currently requires Java 17 to run and currently only has 2 tools, this h
 
 | Command | Description | Usage |
 | --- | --- | --- |
-| strings | Prints every string that is in the jar or class file. | strings <<file_name>|all <directory_path>> [--normalize] [--removeDuplicates] [--showSHA1Hash] 
+| strings | Prints every string that is in the jar or class file. | strings <<file_name>\|all <directory_path>> [--normalize] [--removeDuplicates] [--showSHA1Hash] 
 | analyze | Analyzes the jar or class file and returns a variety of useful information. | analyze <<file_name> \| all <directory_path>>
 
 Strings Arguments<br>
