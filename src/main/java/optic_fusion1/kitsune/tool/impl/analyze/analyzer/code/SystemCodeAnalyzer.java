@@ -27,14 +27,22 @@ public class SystemCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
-            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
-            if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "Getting Environment Variable");
-                return;
-            }
-            String varName = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Gets the Environment Variable '" + varName + "'");
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getProperty", "(Ljava/lang/String;)Ljava/lang/String;")) {
+            getAndLog(classNode, methodNode, methodInsnNode, "Propety");
+            return;
         }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
+            getAndLog(classNode, methodNode, methodInsnNode, "Envrionment");
+        }
+    }
+
+    private void getAndLog(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode, String type) {
+        AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+        if (!isAbstractNodeString(minus1)) {
+            log(classNode, methodNode, methodInsnNode, "Getting " + type);
+            return;
+        }
+        String varName = (String) ((LdcInsnNode) minus1).cst;
+        log(classNode, methodNode, methodInsnNode, "Gets the " + type + " Variable '" + varName + "'");
     }
 }

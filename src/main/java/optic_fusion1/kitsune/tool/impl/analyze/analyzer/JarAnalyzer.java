@@ -40,16 +40,22 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.AWTCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.CodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.FileCodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.JNativeHookAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.SystemCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.file.FileAnalyzer;
+import static optic_fusion1.kitsune.util.Utils.log;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.ParameterNode;
 
 public class JarAnalyzer {
 
     /*
     TODO: Add a way to create Analyzer jar modules. Analyzer modules are jar files that contain one or more Analyzers.
     These modules would be useful to easily add analyzers for specific things without the need to fork the program e.g. Android
-    */
+     */
     private static final HashMap<String, CodeAnalyzer> CODE_ANALYZERS = new HashMap<>();
     private static final List<FileAnalyzer> FILE_ANALYZERS = new ArrayList<>();
 
@@ -72,6 +78,11 @@ public class JarAnalyzer {
         registerCodeAnalyzer("java/sql/Connection", new SQLCodeAnalyzer("Connection"));
         registerCodeAnalyzer("java/sql/DriverManager", new SQLCodeAnalyzer("DriverManager"));
         registerCodeAnalyzer("java/lang/Class", new ClassCodeAnalyzer());
+        registerCodeAnalyzer("java/awt/Robot", new AWTCodeAnalyzer());
+        registerCodeAnalyzer("java/awt/Toolkit", new AWTCodeAnalyzer());
+        registerCodeAnalyzer("java/lang/System", new SystemCodeAnalyzer());
+        registerCodeAnalyzer("com/github/kwhat/jnativehook/keyboard/NativeKeyEvent", new JNativeHookAnalyzer());
+        registerCodeAnalyzer("com/github/kwhat/jnativehook/GlobalScreen", new JNativeHookAnalyzer());
     }
 
     private void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
@@ -102,7 +113,25 @@ public class JarAnalyzer {
     }
 
     private void processClassNode(ClassNode classNode) {
+        // TODO: Make it so it carves out the entire class first and then process that
+
+        // Logs Fields
+        for (FieldNode node : classNode.fields) {
+            log(classNode, node);
+        }
+
+        // Processes Methods
         for (MethodNode methodNode : classNode.methods) {
+
+            // Logs Parameters
+            if (methodNode.parameters != null) {
+                for (ParameterNode parameter : methodNode.parameters) {
+                    log(classNode, methodNode, parameter);
+                }
+
+            }
+
+            // Analyzes each instruction
             for (AbstractInsnNode instruction : methodNode.instructions) {
                 if (instruction instanceof MethodInsnNode method) {
                     String owner = method.owner;
