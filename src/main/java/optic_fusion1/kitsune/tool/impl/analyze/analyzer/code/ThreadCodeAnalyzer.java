@@ -17,7 +17,9 @@
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
 import static optic_fusion1.kitsune.util.Utils.log;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -26,7 +28,13 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (methodInsnNode.name.equals("sleep")) {
-            log(classNode, methodNode, methodInsnNode, "Thread Sleep");
+            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            if (!isAbstractNodeString(minus1)) {
+                log(classNode, methodNode, methodInsnNode, "Thread Sleep");
+                return;
+            }
+            String millis = (String) ((LdcInsnNode) minus1).cst;
+            log(classNode, methodNode, methodInsnNode, "Thread Sleep(" + millis + " millis)");
         }
     }
 }

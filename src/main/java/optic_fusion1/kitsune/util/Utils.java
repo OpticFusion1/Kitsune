@@ -22,6 +22,8 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.ParameterNode;
 
 public final class Utils {
 
@@ -34,11 +36,19 @@ public final class Utils {
         return file.exists();
     }
 
-    public static void log(ClassNode classNode, MethodNode methodNode, MethodInsnNode method, String type) {
+    public static void log(ClassNode classNode, FieldNode fieldNode) {
+        LOGGER.info("Field: " + classNode.name + "#" + fieldNode.name + " " + fieldNode.desc + " " + fieldNode.signature + " " + fieldNode.value);
+    }
+
+    public static void log(ClassNode classNode, MethodNode methodNode, ParameterNode parameterNode) {
+        LOGGER.info("Parameter: " + classNode.name + "#" + methodNode.name + ": " + parameterNode.name);
+    }
+
+    public static void log(ClassNode classNode, MethodNode methodNode, MethodInsnNode method, String message) {
         if (method.getPrevious() == null || method.getPrevious().getPrevious() == null) {
             return;
         }
-        LOGGER.info(classNode.name + "#" + methodNode.name + ": " + type);
+        LOGGER.info("Method Insn Node: " + classNode.name + "#" + methodNode.name + ": " + message);
     }
 
 }

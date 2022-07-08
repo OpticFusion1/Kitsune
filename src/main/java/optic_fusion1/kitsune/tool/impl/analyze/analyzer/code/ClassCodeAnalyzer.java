@@ -51,6 +51,18 @@ public class ClassCodeAnalyzer extends CodeAnalyzer {
                 log(classNode, methodNode, methodInsnNode, "Gets a Class field");
             }
         }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "forName", "(Ljava/lang/String;)Ljava/lang/Class;")) {
+            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            if (minus1 instanceof LdcInsnNode ldc) {
+                if (ldc.cst instanceof String string) {
+                    log(classNode, methodNode, methodInsnNode, "Gets a Class called '" + string + "'");
+                } else {
+                    log(classNode, methodNode, methodInsnNode, "Gets a Class");
+                }
+            } else {
+                log(classNode, methodNode, methodInsnNode, "Gets a Class");
+            }
+        }
     }
 
 }

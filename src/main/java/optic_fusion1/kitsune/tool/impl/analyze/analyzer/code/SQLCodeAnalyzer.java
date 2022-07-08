@@ -35,15 +35,13 @@ public class SQLCodeAnalyzer extends CodeAnalyzer {
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "prepareStatement", "(Ljava/lang/String;)Ljava/sql/PreparedStatement;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
-            if (minus1 instanceof LdcInsnNode ldc) {
-                if (ldc.cst instanceof String statement) {
-                    log(classNode, methodNode, methodInsnNode, "Creates the PrepatedStatement '" + statement + "'");
-                } else {
-                    log(classNode, methodNode, methodInsnNode, "Creates a PreparedStatement");
-                }
-            } else {
+            if (!isAbstractNodeString(minus1)) {
                 log(classNode, methodNode, methodInsnNode, "Creates a PreparedStatement");
+                return;
             }
+            String statement = (String) ((LdcInsnNode) minus1).cst;
+            log(classNode, methodNode, methodInsnNode, "Creates the PreparedStatement '" + statement + "'");
+            return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getConnection", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/sql/Connection;")) {
             log(classNode, methodNode, methodInsnNode, "Gets a SQL connection");

@@ -16,15 +16,15 @@
  */
 package optic_fusion1.kitsune;
 
-import optic_fusion1.kitsune.shellparser.ParseException;
-import optic_fusion1.kitsune.shellparser.ShellParser;
+import java.util.List;
 import optic_fusion1.kitsune.tool.Tool;
 import optic_fusion1.kitsune.tool.ToolManager;
 import optic_fusion1.kitsune.tool.impl.analyze.AnalyzeTool;
 import optic_fusion1.kitsune.tool.impl.StringsTool;
-import java.util.List;
 import java.util.Scanner;
 import optic_fusion1.kitsune.logging.CustomLogger;
+import optic_fusion1.kitsune.shellparser.ParseException;
+import optic_fusion1.kitsune.shellparser.ShellParser;
 
 public class Kitsune implements Runnable {
 

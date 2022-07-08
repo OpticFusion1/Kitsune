@@ -53,7 +53,7 @@ public class StringsTool extends Tool {
     public void run(List<String> args) {
         // TODO: Add better arg handling
         if (args.isEmpty()) {
-            LOGGER.info("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+            LOGGER.info("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates] [--showSHA1Hash]");
         }
         if (args.contains("--normalize")) {
             args.remove("--normalize");
@@ -67,6 +67,7 @@ public class StringsTool extends Tool {
             args.remove("--showSHA1Hash");
             showSha1Hash = true;
         }
+        System.out.println(normalize + " " + removeDuplicateStrings + " " + showSha1Hash);
         if (!args.get(0).equalsIgnoreCase("all")) {
             File input = new File(args.get(0));
             if (!checkFileExists(input)) {
@@ -201,7 +202,7 @@ public class StringsTool extends Tool {
             String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString + (decodedString.isBlank() ? "" : " Decoded: " + decodedString);
             String sha1Hash = "";
             if (showSha1Hash) {
-                sha1Hash = DigestUtils.sha1Hex(ldcInsnNode.cst.toString());
+                sha1Hash = DigestUtils.sha1Hex(ldcString);
             }
             if (removeDuplicateStrings) {
                 if (strings.contains(finalString)) {
