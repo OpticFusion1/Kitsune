@@ -25,6 +25,9 @@ import java.util.Scanner;
 import optic_fusion1.kitsune.logging.CustomLogger;
 import optic_fusion1.kitsune.shellparser.ParseException;
 import optic_fusion1.kitsune.shellparser.ShellParser;
+import optic_fusion1.kitsune.tool.impl.FixTool;
+import optic_fusion1.kitsune.util.I18n;
+import static optic_fusion1.kitsune.util.I18n.tl;
 
 public class Kitsune implements Runnable {
 
@@ -36,6 +39,8 @@ public class Kitsune implements Runnable {
     @Override
     public void run() {
         init();
+        LOGGER.info(tl("kitsune_program_loaded"));
+        handleCLI();
     }
 
     private void handleCLI() {
@@ -43,12 +48,13 @@ public class Kitsune implements Runnable {
             try {
                 List<String> args = ShellParser.parseString(SCANNER.nextLine());
                 if (args.isEmpty()) {
-                    LOGGER.warn("You did not enter any arguments");
+                    LOGGER.warn(tl("no_args_entered"));
                     continue;
                 }
                 Tool tool = TOOL_MANAGER.getTool(args.get(0));
                 if (tool == null) {
-                    LOGGER.warn(args.get(0) + " is not a valid tool");
+                    // TODO: Look into suggesting the closest tool to what's provided
+                    LOGGER.warn(tl("invalid_tool", args.get(0)));
                     continue;
                 }
                 args.remove(0);
@@ -61,9 +67,14 @@ public class Kitsune implements Runnable {
 
     private void init() {
         running = true;
-        registerTools(new StringsTool(), new AnalyzeTool());
-        LOGGER.info("Program loaded. Enter a command:");
-        handleCLI();
+        loadI18n();
+        registerTools(new StringsTool(), new AnalyzeTool(), new FixTool());
+    }
+
+    private void loadI18n() {
+        I18n I18n = new I18n();
+        // TODO: Add other lang files
+        I18n.updateLocale("en");
     }
 
     private void registerTools(Tool... tools) {

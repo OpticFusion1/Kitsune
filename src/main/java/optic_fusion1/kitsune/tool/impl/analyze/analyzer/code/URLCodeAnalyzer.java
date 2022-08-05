@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,15 +31,15 @@ public class URLCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "URL Created");
+                log(classNode, methodNode, methodInsnNode, tl("uca_url_initialized"));
                 return;
             }
             String url = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Created a URL pointing to '" + url + "'");
+            log(classNode, methodNode, methodInsnNode, tl("uca_named_url_initialized", url));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "openConnection", "()Ljava/net/URLConnection;")) {
-            log(classNode, methodNode, methodInsnNode, "URL Connection Opened");
+            log(classNode, methodNode, methodInsnNode, tl("uca_url_connection_opened"));
             return;
         }
     }

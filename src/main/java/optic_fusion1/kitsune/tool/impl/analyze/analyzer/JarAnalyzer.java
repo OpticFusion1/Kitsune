@@ -43,9 +43,12 @@ import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.AWTCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.CodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.FileCodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.FilesCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.JNativeHookAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.JavassistAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.SystemCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.file.FileAnalyzer;
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.ParameterNode;
@@ -83,6 +86,8 @@ public class JarAnalyzer {
         registerCodeAnalyzer("java/lang/System", new SystemCodeAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/keyboard/NativeKeyEvent", new JNativeHookAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/GlobalScreen", new JNativeHookAnalyzer());
+        registerCodeAnalyzer("java/nio/file/Files", new FilesCodeAnalyzer());
+        registerCodeAnalyzer("javassist/CtMethod", new JavassistAnalyzer());
     }
 
     private void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
@@ -98,17 +103,17 @@ public class JarAnalyzer {
     }
 
     public void analyze(File file) {
-        LOGGER.info("Processing file");
+        LOGGER.info(tl("processing", file.toPath()));
         for (FileAnalyzer analyzer : FILE_ANALYZERS) {
             analyzer.analyze(file);
         }
-        LOGGER.info("Gathering all class nodes in " + file.toPath());
+        LOGGER.info(tl("ja_gathering_class_nodes"));
         List<ClassNode> classNodes = getClassNodesFromFile(file);
         if (classNodes.isEmpty()) {
-            LOGGER.warn(file.toPath() + " does not contain any class nodes");
+            LOGGER.warn(tl("ja_class_nodes_not_found", file.toPath()));
             return;
         }
-        LOGGER.info("Processing class nodes");
+        LOGGER.info(tl("ja_processing_class_nodes"));
         classNodes.forEach(this::processClassNode);
     }
 

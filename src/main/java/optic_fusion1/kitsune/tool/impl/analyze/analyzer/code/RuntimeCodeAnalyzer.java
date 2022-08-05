@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,14 +31,14 @@ public class RuntimeCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "exec", "(Ljava/lang/String;)Ljava/lang/Process;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "Runtime Exec");
+                log(classNode, methodNode, methodInsnNode, tl("rca_exec"));
                 return;
             }
             String execCommand = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Runs the exec command '" + execCommand + "'");
+            log(classNode, methodNode, methodInsnNode, tl("rca_exec_known", execCommand));
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getRuntime", "()Ljava/lang/Runtime;")) {
-            log(classNode, methodNode, methodInsnNode, "Gets Runtime instance");
+            log(classNode, methodNode, methodInsnNode, tl("rca_runtime_instance"));
         }
     }
 

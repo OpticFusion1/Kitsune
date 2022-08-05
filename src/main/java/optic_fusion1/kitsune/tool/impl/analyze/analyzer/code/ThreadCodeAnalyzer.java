@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -27,14 +28,31 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (methodInsnNode.name.equals("sleep")) {
+
+        // TODO: Merge these two
+        if (isMethodInsnNodeCorrect(methodInsnNode, "interrupt", "()V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
-            if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "Thread Sleep");
+            if (isMethodInsnNodeCorrect((MethodInsnNode) minus1, "currentThread", "()Ljava/lang/Thread;")) {
+                log(classNode, methodNode, methodInsnNode, tl("current_thread_interrupted"));
                 return;
             }
-            String millis = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Thread Sleep(" + millis + " millis)");
+            log(classNode, methodNode, methodInsnNode, tl("thread_interrupted"));
+            return;
+        }
+        if (methodInsnNode.name.equals("sleep")) {
+            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            if (isAbstractNodeLong(minus1)) {
+                Long millis = (Long) ((LdcInsnNode) minus1).cst;
+                // TODO: Figure out a less bypassable number that still causes thread crash
+                boolean maxValue = millis == Long.MAX_VALUE;
+                log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis, maxValue));
+            }
+            if (isAbstractNodeString(minus1)) {
+                String millis = (String) ((LdcInsnNode) minus1).cst;
+                log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis));
+                return;
+            }
+            log(classNode, methodNode, methodInsnNode, tl("thread_sleep"));
         }
     }
 }

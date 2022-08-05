@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -31,12 +32,10 @@ public class StreamCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/File;)V")) {
-            log(classNode, methodNode, methodInsnNode, "Creates a " + streamName);
+        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/File;)V")
+                || isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/InputStream;)V")) {
+            log(classNode, methodNode, methodInsnNode, tl("strca_initialized", streamName));
             return;
-        }
-        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/InputStream;)V")) {
-            log(classNode, methodNode, methodInsnNode, "Creates a " + streamName);
         }
     }
 

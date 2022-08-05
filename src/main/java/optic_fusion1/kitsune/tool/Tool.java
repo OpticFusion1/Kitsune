@@ -30,11 +30,11 @@ public abstract class Tool {
 
     public abstract void run(List<String> args);
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public String getDescription() {
+    public String description() {
         return description;
     }
 

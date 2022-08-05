@@ -31,11 +31,18 @@ public abstract class CodeAnalyzer extends Analyzer {
         return methodInsnNode.name.equals(name) && methodInsnNode.desc.equals(desc);
     }
 
-    public boolean isAbstractNodeString(AbstractInsnNode node) {
-        if (!(node instanceof LdcInsnNode ldcIsnNode)) {
+    public boolean isAbstractNodeLong(AbstractInsnNode node) {
+        if (!(node instanceof LdcInsnNode ldcInsnNode)) {
             return false;
         }
-        return ldcIsnNode.cst instanceof String;
+        return ldcInsnNode.cst instanceof Long;
+    }
+
+    public boolean isAbstractNodeString(AbstractInsnNode node) {
+        if (!(node instanceof LdcInsnNode ldcInsnNode)) {
+            return false;
+        }
+        return ldcInsnNode.cst instanceof String;
     }
 
 }
