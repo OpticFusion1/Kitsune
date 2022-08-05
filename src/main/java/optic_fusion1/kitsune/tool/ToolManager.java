@@ -36,7 +36,7 @@ public class ToolManager {
         if (tool == null) {
             return;
         }
-        TOOLS.putIfAbsent(tool.getName(), tool);
+        TOOLS.putIfAbsent(tool.name(), tool);
     }
 
 }

@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -27,22 +28,24 @@ public class SystemCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
+
         if (isMethodInsnNodeCorrect(methodInsnNode, "getProperty", "(Ljava/lang/String;)Ljava/lang/String;")) {
-            getAndLog(classNode, methodNode, methodInsnNode, "Propety");
+            getAndLog(classNode, methodNode, methodInsnNode, tl("sysca_property"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
-            getAndLog(classNode, methodNode, methodInsnNode, "Envrionment");
+            getAndLog(classNode, methodNode, methodInsnNode, tl("sysca_environment"));
         }
     }
 
+    // TODO: Abstract away for other analyzer 
     private void getAndLog(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode, String type) {
         AbstractInsnNode minus1 = methodInsnNode.getPrevious();
         if (!isAbstractNodeString(minus1)) {
-            log(classNode, methodNode, methodInsnNode, "Getting " + type);
+            log(classNode, methodNode, methodInsnNode, tl("sysca_get_type"));
             return;
         }
         String varName = (String) ((LdcInsnNode) minus1).cst;
-        log(classNode, methodNode, methodInsnNode, "Gets the " + type + " Variable '" + varName + "'");
+        log(classNode, methodNode, methodInsnNode, tl("sysca_get_type_variable", type, varName));
     }
 }

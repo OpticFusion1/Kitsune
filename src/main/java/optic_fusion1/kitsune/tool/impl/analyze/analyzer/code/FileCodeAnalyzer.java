@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -27,17 +28,31 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
+        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")) {
+            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            String fileName = (String) ((LdcInsnNode) minus1).cst;
+            log(classNode, methodNode, methodInsnNode, tl("fca_named_file_created", fileName));
+            return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V")) {
+            AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            AbstractInsnNode minus2 = minus1.getPrevious();
+            String fileName = (String) ((LdcInsnNode) minus1).cst;
+            String directoryName = (String) ((LdcInsnNode) minus2).cst;
+            log(classNode, methodNode, methodInsnNode, tl("fca_named_file_created_dir", fileName, directoryName));
+            return;
+        }
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")
                 || isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/io/File;Ljava/lang/String;)V")) {
-            log(classNode, methodNode, methodInsnNode, "File Initialized");
+            log(classNode, methodNode, methodInsnNode, tl("fca_file_initialized"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "mkdir", "()Z") || isMethodInsnNodeCorrect(methodInsnNode, "mkdirs", "()Z")) {
-            log(classNode, methodNode, methodInsnNode, "Directory Created");
+            log(classNode, methodNode, methodInsnNode, tl("fca_dir_created"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "delete", "()Z")) {
-            log(classNode, methodNode, methodInsnNode, "File Deleted");
+            log(classNode, methodNode, methodInsnNode, tl("fca_file_deleted"));
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "createTempFile", "(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
@@ -45,29 +60,30 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
             if (isAbstractNodeString(minus1) && isAbstractNodeString(minus2)) {
                 String fileExtension = (String) ((LdcInsnNode) minus1).cst;
                 String fileName = (String) ((LdcInsnNode) minus2).cst;
-                log(classNode, methodNode, methodInsnNode, "Creates the tempFile '" + fileName + fileExtension + "'");
+                log(classNode, methodNode, methodInsnNode, tl("fca_named_temp_file_created", fileName, fileExtension));
                 return;
             }
-            log(classNode, methodNode, methodInsnNode, "Temp File Created");
+            log(classNode, methodNode, methodInsnNode, tl("fca_temp_file_created"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "createNewFile", "()Z")) {
-            log(classNode, methodNode, methodInsnNode, "File Created");
+            log(classNode, methodNode, methodInsnNode, tl("fca_file_created"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "renameTo", "(Ljava/io/File;)Z")) {
-            log(classNode, methodNode, methodInsnNode, "File Renamed");
+            log(classNode, methodNode, methodInsnNode, tl("fca_file_renamed"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "delete", "()Z") || isMethodInsnNodeCorrect(methodInsnNode, "deleteOnExit", "()Z")) {
-            log(classNode, methodNode, methodInsnNode, "File Deleted");
+            log(classNode, methodNode, methodInsnNode, tl("fca_file_deleted"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "list", "()[Ljava/lang/String;")
                 || isMethodInsnNodeCorrect(methodInsnNode, "listFiles", "()[Ljava/io/File;")
                 || isMethodInsnNodeCorrect(methodInsnNode, "listRoots", "()[Ljava/io/File;")) {
-            log(classNode, methodNode, methodInsnNode, "Lists Files");
+            log(classNode, methodNode, methodInsnNode, tl("fca_lists_files"));
             return;
+
         }
     }
 

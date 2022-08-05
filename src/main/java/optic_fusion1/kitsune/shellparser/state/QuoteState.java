@@ -18,6 +18,7 @@ package optic_fusion1.kitsune.shellparser.state;
 
 import java.util.List;
 import optic_fusion1.kitsune.shellparser.ParseException;
+import static optic_fusion1.kitsune.util.I18n.tl;
 
 public class QuoteState extends State {
 
@@ -30,7 +31,7 @@ public class QuoteState extends State {
     @Override
     public List<String> parse(final String parsing, final String accumulator, final List<String> parsed, final State referrer) throws ParseException {
         if (parsing.isEmpty()) {
-            throw new ParseException("Mismatched quote character: " + this.quote);
+            throw new ParseException(tl("qs_parse_exception", this.quote));
         }
         final char c = (char) parsing.getBytes()[0];
         if (c == '\\') {

@@ -25,19 +25,25 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import static optic_fusion1.kitsune.util.I18n.tl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.objectweb.asm.tree.MethodInsnNode;
 
+// TODO: Cleanup class if possible
 public class StringsTool extends Tool {
 
     private boolean normalize;
@@ -46,14 +52,15 @@ public class StringsTool extends Tool {
     private boolean showSha1Hash;
 
     public StringsTool() {
-        super("strings", "Prints every string in a .jar or .class file. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates]");
+        super("strings", tl("st_desc") + " " + tl("st_usage"));
     }
 
     @Override
     public void run(List<String> args) {
         // TODO: Add better arg handling
         if (args.isEmpty()) {
-            LOGGER.info("You did not enter enough arguments. Usage: printStrings <all <directory_path>|file_path> [--normalize] [--removeDuplicates] [--showSHA1Hash]");
+            LOGGER.info(tl("not_enough_args") + " " + tl("st_usage"));
+            return;
         }
         if (args.contains("--normalize")) {
             args.remove("--normalize");
@@ -67,40 +74,39 @@ public class StringsTool extends Tool {
             args.remove("--showSHA1Hash");
             showSha1Hash = true;
         }
-        System.out.println(normalize + " " + removeDuplicateStrings + " " + showSha1Hash);
         if (!args.get(0).equalsIgnoreCase("all")) {
             File input = new File(args.get(0));
             if (!checkFileExists(input)) {
-                LOGGER.info(input.toPath() + " does not exist");
+                LOGGER.info(tl("file_does_not_exist", input.toPath()));
                 return;
             }
             if (!input.getName().endsWith(".jar") && !input.getName().endsWith(".class")) {
-                LOGGER.info(input.toPath() + " is not a jar file");
+                LOGGER.info(tl("file_invalid_extension", input.toPath()));
                 return;
             }
             if (input.isDirectory()) {
-                LOGGER.info(input.toPath() + " is a directory");
+                LOGGER.info(tl("file_is_directory", input.toPath()));
                 return;
             }
             processFile(input);
             return;
         }
         if (args.size() == 1) {
-            LOGGER.info("You did not enter enough arguments. Usage: printStrings all <directory_path>");
+            LOGGER.info(tl("not_enough_args") + " " + tl("st_usage"));
             return;
         }
         File input = new File(args.get(1));
         if (!checkFileExists(input)) {
-            LOGGER.info(input.toPath() + " does not exist");
+            LOGGER.info(tl("file_does_not_exist", input.toPath()));
             return;
         }
         if (!input.isDirectory()) {
-            LOGGER.info(input.toPath() + " is not a directory");
+            LOGGER.info(tl("file_is_not_directory", input.toPath()));
             return;
         }
         for (File file : input.listFiles()) {
             LOGGER.info("\n\n\n\n");
-            LOGGER.info("Processing " + file.getName() + ":");
+            LOGGER.info(tl("processing", file.getName()));
             try {
                 processFile(file);
             } catch (Exception e) {
@@ -116,10 +122,36 @@ public class StringsTool extends Tool {
             }
             return;
         }
-        if (!inputFile.getName().endsWith(".jar")) {
-            LOGGER.info(inputFile.toPath() + " is not a jar file");
+        if (!inputFile.getName().endsWith(".jar") && !inputFile.getName().endsWith(".class")) {
+            LOGGER.info(tl("file_invalid_extension", inputFile.toPath()));
             return;
         }
+        if (inputFile.getName().endsWith(".jar")) {
+            handleJarFile(inputFile);
+            return;
+        }
+        handleClassFile(inputFile);
+    }
+
+    private void handleClassFile(File inputFile) {
+        try (FileInputStream inputStream = new FileInputStream(inputFile)) {
+            ClassReader classReader;
+            try {
+                classReader = new ClassReader(inputStream);
+            } catch (Exception e) {
+                return;
+            }
+            ClassNode classNode = new ClassNode();
+            classReader.accept(classNode, 0);
+            printStrings(classNode);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void handleJarFile(File inputFile) {
         try (ZipFile zipFile = new ZipFile(inputFile)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
@@ -148,22 +180,31 @@ public class StringsTool extends Tool {
         }
     }
 
+    // TODO: Improve this method
     private void printStrings(ClassNode classNode) {
+        boolean shouldPrintMethodStrings = true;
+        boolean shouldPrintFieldStrings = true;
         if (classNode.methods.isEmpty()) {
-            LOGGER.info(classNode.name + " has no methods. Skipping");
-            return;
+            LOGGER.info(tl("st_class_no_methods", classNode.name));
+            shouldPrintMethodStrings = false;
         }
         if (classNode.fields.isEmpty()) {
-            LOGGER.info(classNode.name + " has no fields. Skipping");
+            LOGGER.info(tl("st_class_no_fields", classNode.name));
+            shouldPrintFieldStrings = false;
         }
-        for (MethodNode method : classNode.methods) {
-            handleMethod(classNode, method);
+        if (shouldPrintMethodStrings) {
+            for (MethodNode method : classNode.methods) {
+                handleMethod(classNode, method);
+            }
         }
-        for (FieldNode field : classNode.fields) {
-            handleField(classNode, field);
+        if (shouldPrintFieldStrings) {
+            for (FieldNode field : classNode.fields) {
+                handleField(classNode, field);
+            }
         }
     }
 
+    // TODO: Handle new String(new byte[] {})
     private void handleField(ClassNode classNode, FieldNode fieldNode) {
         Object value = fieldNode.value;
         if (!(value instanceof String)) {
@@ -177,6 +218,7 @@ public class StringsTool extends Tool {
         LOGGER.info(string);
     }
 
+    // TODO: Handle new String(new byte[] {})
     private void handleMethod(ClassNode classNode, MethodNode methodNode) {
         List<String> strings = new ArrayList<>();
         for (AbstractInsnNode instruction : methodNode.instructions) {
@@ -189,16 +231,16 @@ public class StringsTool extends Tool {
 
             String ldcString = ldcInsnNode.cst.toString();
             AbstractInsnNode minus1 = instruction.getPrevious();
-            // TODO: Move Base64 to a general deobfuscation tool
-            // TODO: Properly support Base64
             if (normalize) {
                 ldcString = ldcString.toLowerCase().trim();
             }
             String decodedString = "";
+            // TODO: Move Base64 to a general deobfuscation tool
+            // TODO: Properly support Base64
             if (minus1 instanceof MethodInsnNode methodInsnNode && methodInsnNode.owner.equals("java/util/Base64")) {
                 decodedString = new String(Base64.getDecoder().decode(ldcInsnNode.cst.toString()));
             }
-            // TODO: Move Base64 to a general deobfuscation tool
+            // TODO: Come up with a good way to make this translatable
             String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString + (decodedString.isBlank() ? "" : " Decoded: " + decodedString);
             String sha1Hash = "";
             if (showSha1Hash) {

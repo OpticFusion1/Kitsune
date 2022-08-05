@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.tool.impl.analyze.analyzer.code;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -30,11 +31,21 @@ public class ZipEntryCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, "ZipEntry Initialized");
+                log(classNode, methodNode, methodInsnNode, tl("zeca_zipentry_initialized"));
                 return;
             }
             String zipEntryName = (String) ((LdcInsnNode) minus1).cst;
-            log(classNode, methodNode, methodInsnNode, "Creates a ZipEntry called '" + zipEntryName + "'");
+            log(classNode, methodNode, methodInsnNode, tl("zeca_named_zipentry_initalized", zipEntryName));
+            return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getName", "()Ljava/lang/String;")) {
+            AbstractInsnNode plus1 = methodInsnNode.getNext();
+            if (!isAbstractNodeString(plus1)) {
+                log(classNode, methodNode, methodInsnNode, tl("zeca_gets_zipentry_name"));
+                return;
+            }
+            String zipEntryName = (String) ((LdcInsnNode) plus1).cst;
+            log(classNode, methodNode, methodInsnNode, tl("zeca_gets_named_zipentry_name", zipEntryName));
         }
     }
 

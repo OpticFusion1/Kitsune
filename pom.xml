@@ -6,7 +6,7 @@
 
     <groupId>optic_fusion1</groupId>
     <artifactId>Kitsune</artifactId>
-    <version>0.12.0</version>
+    <version>1.0.0</version>
 
     <build>
         <resources>
@@ -67,7 +67,24 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-alpha2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.8.0-alpha2</version>
+        </dependency>         
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
@@ -102,6 +119,18 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Col-E</groupId>
+            <artifactId>CAFED00D</artifactId>
+            <version>1.10.2</version>
             <type>jar</type>
         </dependency>
     </dependencies>

@@ -22,27 +22,13 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-public class AWTCodeAnalyzer extends CodeAnalyzer {
+public class JavassistAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-        if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "()V")) {
-            log(classNode, methodNode, methodInsnNode, tl("awtca_robot_initialized"));
-            return;
+        if (isMethodInsnNodeCorrect(methodInsnNode, "insertAfter", "(Ljava/lang/String;)V")) {
+            log(classNode, methodNode, methodInsnNode, tl("ja_code_injection"));
         }
-        if (isMethodInsnNodeCorrect(methodInsnNode, "createScreenCapture", "(Ljava/awt/Rectangle;)Ljava/awt/image/BufferedImage;")) {
-            log(classNode, methodNode, methodInsnNode, tl("awtca_screen_cap_taken"));
-            return;
-        }
-        if (isMethodInsnNodeCorrect(methodInsnNode, "getDefaultToolkit", "()Ljava/awt/Toolkit;")) {
-            log(classNode, methodNode, methodInsnNode, tl("awtca_get_default_toolkit"));
-            return;
-        }
-        if (isMethodInsnNodeCorrect(methodInsnNode, "getScreenSize", "()Ljava/awt/Dimension;")) {
-            log(classNode, methodNode, methodInsnNode, tl("awtca_get_screen_size"));
-            return;
-        }
-
     }
 
 }

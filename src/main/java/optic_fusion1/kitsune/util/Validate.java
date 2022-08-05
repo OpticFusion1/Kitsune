@@ -16,13 +16,15 @@
  */
 package optic_fusion1.kitsune.util;
 
+import static optic_fusion1.kitsune.util.I18n.tl;
+
 public final class Validate {
 
     private Validate() {
     }
 
     public static void isNotNull(Object object) {
-        isNotNull(object, "The validated object is null");
+        isNotNull(object, tl("validated_object_is_null"));
     }
 
     public static void isNotNull(Object object, String message) {

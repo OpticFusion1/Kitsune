@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import static optic_fusion1.kitsune.util.I18n.tl;
 
 public class ManifestMFFileAnalyzer extends FileAnalyzer {
 
@@ -36,7 +37,7 @@ public class ManifestMFFileAnalyzer extends FileAnalyzer {
             ZipFile zipFile = new ZipFile(file);
             ZipEntry entry = zipFile.getEntry("META-INF/MANIFEST.MF");
             if (entry == null) {
-                LOGGER.info(file.getAbsolutePath() + " doesn't contain a META-INF/MANIFEST.MF file");
+                LOGGER.info(tl("mf_file_not_found", file.toPath()));
                 return;
             }
             InputStream inputStream = zipFile.getInputStream(entry);
