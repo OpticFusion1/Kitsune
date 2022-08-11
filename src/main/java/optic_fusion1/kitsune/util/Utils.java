@@ -21,8 +21,13 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import me.coley.cafedude.InvalidClassException;
 import me.coley.cafedude.classfile.ClassFile;
 import me.coley.cafedude.io.ClassFileReader;
@@ -30,6 +35,7 @@ import me.coley.cafedude.io.ClassFileWriter;
 import me.coley.cafedude.transform.IllegalStrippingTransformer;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.Main;
+import optic_fusion1.kitsune.tool.impl.StringsTool;
 import static optic_fusion1.kitsune.util.I18n.tl;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -96,6 +102,28 @@ public final class Utils {
         ClassWriter classWriter = new ClassWriter(0);
         node.accept(classWriter);
         return classWriter;
+    }
+
+    public static ClassNode getClassNodeFromClassFile(File file) {
+        if (!file.getName().endsWith(".class")) {
+            return null;
+        }
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            ClassReader classReader;
+            try {
+                classReader = new ClassReader(inputStream);
+            } catch (Exception e) {
+                return null;
+            }
+            ClassNode classNode = new ClassNode();
+            classReader.accept(classNode, 0);
+            return classNode;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

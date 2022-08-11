@@ -49,6 +49,7 @@ import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.JavassistAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.code.SystemCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.file.FileAnalyzer;
 import static optic_fusion1.kitsune.util.I18n.tl;
+import optic_fusion1.kitsune.util.Utils;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.ParameterNode;
@@ -151,6 +152,11 @@ public class JarAnalyzer {
 
     private List<ClassNode> getClassNodesFromFile(File file) {
         List<ClassNode> classNodes = new ArrayList<>();
+        if (file.getName().endsWith(".class")) {
+            ClassNode node = Utils.getClassNodeFromClassFile(file);
+            classNodes.add(node);
+            return classNodes;
+        }
         try (ZipFile zipFile = new ZipFile(file)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {

@@ -40,6 +40,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import static optic_fusion1.kitsune.util.I18n.tl;
+import optic_fusion1.kitsune.util.Utils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.objectweb.asm.tree.MethodInsnNode;
 
@@ -134,21 +135,12 @@ public class StringsTool extends Tool {
     }
 
     private void handleClassFile(File inputFile) {
-        try (FileInputStream inputStream = new FileInputStream(inputFile)) {
-            ClassReader classReader;
-            try {
-                classReader = new ClassReader(inputStream);
-            } catch (Exception e) {
-                return;
-            }
-            ClassNode classNode = new ClassNode();
-            classReader.accept(classNode, 0);
-            printStrings(classNode);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);
+        ClassNode node = Utils.getClassNodeFromClassFile(inputFile);
+        if (node == null) {
+            System.out.println("Couldn't get a ClassNode from " + inputFile);
+            return;
         }
+        printStrings(node);
     }
 
     private void handleJarFile(File inputFile) {
