@@ -27,11 +27,15 @@ import org.objectweb.asm.ClassWriter;
 public class FixTool extends Tool {
 
     public FixTool() {
-        super("fix", "Attempts to fix .class or .jar files to make them decompilable");
+        super("fix", tl("ft_desc"));
     }
 
     @Override
     public void run(List<String> args) {
+        if (args.isEmpty()) {
+            LOGGER.info(tl("not_enough_args") + " " + tl("ft_usage"));
+            return;
+        }
         File input = new File(args.get(0));
         if (!checkFileExists(input)) {
             LOGGER.info(tl("file_does_not_exist", input.toPath()));

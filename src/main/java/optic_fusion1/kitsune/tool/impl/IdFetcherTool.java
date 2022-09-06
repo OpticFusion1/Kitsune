@@ -20,7 +20,7 @@ public class IdFetcherTool extends Tool {
     private boolean logInnerFiles;
 
     public IdFetcherTool() {
-        super("idfetcher", "Returns the SHA1 of a file name & any inner classes (.zip, .rar, .jar)");
+        super("idfetcher", tl("ift_desc"));
         VALID_FILE_EXTENSIONS.add("jar");
         VALID_FILE_EXTENSIONS.add("zip");
         VALID_FILE_EXTENSIONS.add("rar");
@@ -30,7 +30,7 @@ public class IdFetcherTool extends Tool {
     @Override
     public void run(List<String> args) {
         if (args.isEmpty()) {
-            LOGGER.info(tl("not_enough_args") + " " + tl("idfetcher_usage"));
+            LOGGER.info(tl("not_enough_args") + " " + tl("ift_usage"));
             return;
         }
         if (args.contains("--logInnerFiles")) {
