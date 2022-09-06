@@ -48,6 +48,10 @@ public final class Utils {
 
     }
 
+    public static String normalize(String string) {
+        return string.toLowerCase().trim();
+    }
+    
     public static boolean checkFileExists(File file) {
         isNotNull(file);
         return file.exists();

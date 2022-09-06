@@ -29,7 +29,6 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
 
-        // TODO: Merge these two
         if (isMethodInsnNodeCorrect(methodInsnNode, "interrupt", "()V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (isMethodInsnNodeCorrect((MethodInsnNode) minus1, "currentThread", "()Ljava/lang/Thread;")) {
@@ -41,6 +40,7 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
         }
         if (methodInsnNode.name.equals("sleep")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            // TODO: Merge these two
             if (isAbstractNodeLong(minus1)) {
                 Long millis = (Long) ((LdcInsnNode) minus1).cst;
                 // TODO: Figure out a less bypassable number that still causes thread crash

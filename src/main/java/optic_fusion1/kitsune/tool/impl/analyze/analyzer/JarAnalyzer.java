@@ -119,7 +119,7 @@ public class JarAnalyzer {
     }
 
     private void processClassNode(ClassNode classNode) {
-        // TODO: Make it so it carves out the entire class first and then process that
+        // TODO: Make it so it carves out the entire class first and then process that. Useful given how complex java can be
 
         // Logs Fields
         for (FieldNode node : classNode.fields) {

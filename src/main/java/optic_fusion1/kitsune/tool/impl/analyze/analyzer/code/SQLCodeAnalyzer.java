@@ -32,13 +32,6 @@ public class SQLCodeAnalyzer extends CodeAnalyzer {
         this.name = name;
     }
 
-    /*
-    sqlca_ps_created=Creates a PreparedStatement
-sqlca_ps_string_created=Creates the PreparedStatement {0}
-sqlca_ps_connection_get=Gets a SQL connection
-
-    */
-    
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "prepareStatement", "(Ljava/lang/String;)Ljava/sql/PreparedStatement;")) {

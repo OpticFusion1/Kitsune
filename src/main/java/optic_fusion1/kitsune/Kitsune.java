@@ -26,6 +26,8 @@ import optic_fusion1.kitsune.logging.CustomLogger;
 import optic_fusion1.kitsune.shellparser.ParseException;
 import optic_fusion1.kitsune.shellparser.ShellParser;
 import optic_fusion1.kitsune.tool.impl.FixTool;
+import optic_fusion1.kitsune.tool.impl.IdFetcherTool;
+import optic_fusion1.kitsune.tool.impl.NormalizeTool;
 import optic_fusion1.kitsune.util.I18n;
 import static optic_fusion1.kitsune.util.I18n.tl;
 
@@ -48,7 +50,7 @@ public class Kitsune implements Runnable {
             try {
                 List<String> args = ShellParser.parseString(SCANNER.nextLine());
                 if (args.isEmpty()) {
-                    LOGGER.warn(tl("no_args_entered"));
+                    LOGGER.warn(tl("not_enough_args"));
                     continue;
                 }
                 Tool tool = TOOL_MANAGER.getTool(args.get(0));
@@ -68,7 +70,7 @@ public class Kitsune implements Runnable {
     private void init() {
         running = true;
         loadI18n();
-        registerTools(new StringsTool(), new AnalyzeTool(), new FixTool());
+        registerTools(new StringsTool(), new AnalyzeTool(), new FixTool(), new NormalizeTool(), new IdFetcherTool());
     }
 
     private void loadI18n() {

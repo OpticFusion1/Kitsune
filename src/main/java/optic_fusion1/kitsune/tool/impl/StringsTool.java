@@ -25,16 +25,12 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -224,7 +220,7 @@ public class StringsTool extends Tool {
             String ldcString = ldcInsnNode.cst.toString();
             AbstractInsnNode minus1 = instruction.getPrevious();
             if (normalize) {
-                ldcString = ldcString.toLowerCase().trim();
+                ldcString = Utils.normalize(ldcString);
             }
             String decodedString = "";
             // TODO: Move Base64 to a general deobfuscation tool
