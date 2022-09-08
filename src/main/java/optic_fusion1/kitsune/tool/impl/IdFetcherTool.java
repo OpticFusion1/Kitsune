@@ -52,6 +52,14 @@ public class IdFetcherTool extends Tool {
             } catch (FileNotFoundException ex) {
                 LOGGER.exception(ex);
             }
+            if (logInnerFiles) {
+                String extension = FilenameUtils.getExtension(file.getName());
+                if (!VALID_FILE_EXTENSIONS.contains(extension)) {
+                    LOGGER.info(tl("file_is_not_zip", file.getName()));
+                    return;
+                }
+                handleFile(file);
+            }
             return;
         }
         File directory = new File(args.get(1));
@@ -88,11 +96,7 @@ public class IdFetcherTool extends Tool {
                     // TODO: Handle nested entries
                     LOGGER.info(entry.getName() + " is actually a ZipFile.");
                 }
-                if (entry.isDirectory()) {
-                    LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(entry.getName()));
-                    continue;
-                }
-                LOGGER.info(entry.getName() + ": " + getSha1(zipFile.getInputStream(entry)));
+                LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(entry.getName()));
             }
         } catch (IOException ex) {
             LOGGER.exception(ex);
