@@ -1,10 +1,15 @@
 package optic_fusion1.kitsune.tool.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
@@ -42,7 +47,11 @@ public class IdFetcherTool extends Tool {
             if (!file.exists()) {
                 LOGGER.info(tl("file_does_not_exist", file.getName()));
             }
-            LOGGER.info(DigestUtils.sha1Hex(file.getName()));
+            try {
+                LOGGER.info(getSha1(new FileInputStream(file)));
+            } catch (FileNotFoundException ex) {
+                LOGGER.exception(ex);
+            }
             return;
         }
         File directory = new File(args.get(1));
@@ -53,7 +62,11 @@ public class IdFetcherTool extends Tool {
         for (File file : directory.listFiles()) {
             LOGGER.info("\n\n\n\n");
             LOGGER.info(tl("processing", file.getName()));
-            LOGGER.info(DigestUtils.sha1Hex(file.getName()));
+            try {
+                LOGGER.info(getSha1(new FileInputStream(file)));
+            } catch (FileNotFoundException ex) {
+                LOGGER.exception(ex);
+            }
             if (logInnerFiles) {
                 String extension = FilenameUtils.getExtension(file.getName());
                 if (!VALID_FILE_EXTENSIONS.contains(extension)) {
@@ -75,11 +88,24 @@ public class IdFetcherTool extends Tool {
                     // TODO: Handle nested entries
                     LOGGER.info(entry.getName() + " is actually a ZipFile.");
                 }
-                LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(entry.getName()));
+                if (entry.isDirectory()) {
+                    LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(entry.getName()));
+                    continue;
+                }
+                LOGGER.info(entry.getName() + ": " + getSha1(zipFile.getInputStream(entry)));
             }
         } catch (IOException ex) {
             LOGGER.exception(ex);
         }
+    }
+
+    private String getSha1(InputStream inputStream) {
+        try {
+            return DigestUtils.sha1Hex(inputStream);
+        } catch (IOException ex) {
+            Logger.getLogger(IdFetcherTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "COULD NOT GET SHA-1";
     }
 
     private boolean isActuallyZipFile(ZipFile zipFile, ZipEntry entry) throws IOException {
