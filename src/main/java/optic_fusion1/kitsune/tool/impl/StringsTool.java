@@ -107,7 +107,6 @@ public class StringsTool extends Tool {
             try {
                 processFile(file);
             } catch (Exception e) {
-                continue;
             }
         }
     }
@@ -154,7 +153,7 @@ public class StringsTool extends Tool {
                 ClassReader classReader;
                 try {
                     classReader = new ClassReader(inputStream);
-                } catch (Exception e) {
+                } catch (IOException e) {
                     continue;
                 }
                 ClassNode classNode = new ClassNode();

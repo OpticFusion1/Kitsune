@@ -12,7 +12,7 @@ public class NormalizeTool extends Tool {
     private boolean showSha1Hash;
 
     public NormalizeTool() {
-        super("String", tl("nt_desc"));
+        super("normalize", tl("nt_desc"));
     }
 
     @Override

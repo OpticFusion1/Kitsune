@@ -17,19 +17,29 @@
 package optic_fusion1.kitsune.tool.impl.analyze;
 
 import optic_fusion1.kitsune.tool.Tool;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.JarAnalyzer;
-import static optic_fusion1.kitsune.util.Utils.checkFileExists;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.html.HTMLAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.JavaAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.vbs.VBSAnalyzer;
 import static optic_fusion1.kitsune.util.I18n.tl;
+import static optic_fusion1.kitsune.util.Utils.checkFileExists;
+import org.apache.commons.io.FilenameUtils;
 
 public class AnalyzeTool extends Tool {
 
-    private static final JarAnalyzer JAVA_ANALYZER = new JarAnalyzer();
+    private static final HashMap<String, Analyzer> ANALYZERS = new HashMap<>();
 
     public AnalyzeTool() {
         super("analyze", tl("at_desc"));
+        JavaAnalyzer javaAnalyzer = new JavaAnalyzer();
+        ANALYZERS.put("java", javaAnalyzer);
+        ANALYZERS.put("jar", javaAnalyzer);
+        ANALYZERS.put("html", new HTMLAnalyzer());
+        ANALYZERS.put("vbs", new VBSAnalyzer());
     }
 
     @Override
@@ -38,27 +48,16 @@ public class AnalyzeTool extends Tool {
             LOGGER.warn(tl("not_enough_args") + " " + tl("at_usage"));
             return;
         }
-        if (!args.get(0).equalsIgnoreCase("all")) {
-            File input = new File(args.get(0));
-            if (!checkFileExists(input)) {
-                LOGGER.info(tl("file_does_not_exist", input.toPath()));
-                return;
-            }
-            if (!input.getName().endsWith(".jar") && !input.getName().endsWith(".class")) {
-                LOGGER.info(tl("file_invalid_extension", input.toPath()));
-                return;
-            }
-            if (input.isDirectory()) {
-                LOGGER.info(tl("file_is_directory", input.toPath()));
-                return;
-            }
-            JAVA_ANALYZER.analyze(input);
+        if (args.get(0).equalsIgnoreCase("all")) {
+            handleAll(args);
             return;
         }
-        if (args.size() == 1) {
-            LOGGER.info(tl("not_enough_args") + " " + tl("at_usage"));
-            return;
-        }
+        File file = new File(args.get(0));
+        LOGGER.info(tl("at_analyzing", file.toPath()));
+        handleFile(file);
+    }
+
+    private void handleAll(List<String> args) {
         File input = new File(args.get(1));
         if (!checkFileExists(input)) {
             LOGGER.info(tl("file_does_not_exist", input.toPath()));
@@ -69,13 +68,32 @@ public class AnalyzeTool extends Tool {
             return;
         }
         for (File file : input.listFiles()) {
-            LOGGER.info("\n\n\n\n");
-            LOGGER.info(tl("at_analyzing", file.toPath()));
-            try {
-                JAVA_ANALYZER.analyze(file);
-            } catch (Exception e) {
+            if (file.isDirectory()) {
                 continue;
+            }
+            LOGGER.info(tl("at_analyzing", file.toPath()));
+            if (handleFile(file)) {
+                LOGGER.info("\n\n\n\n");
             }
         }
     }
+
+    private boolean handleFile(File input) {
+        if (!checkFileExists(input)) {
+            LOGGER.info(tl("file_does_not_exist", input.toPath()));
+            return false;
+        }
+
+        String extension = FilenameUtils.getExtension(input.getName().replaceFirst(".\\\\?./", ""));
+        if (extension.isBlank()) {
+            return false;
+        }
+        if (!ANALYZERS.containsKey(extension)) {
+            LOGGER.info(tl("file_unsupported_extension", extension));
+            return false;
+        }
+        ANALYZERS.get(extension).analyze(input);
+        return true;
+    }
+
 }

@@ -16,6 +16,10 @@
  */
 package optic_fusion1.kitsune;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import optic_fusion1.kitsune.tool.Tool;
 import optic_fusion1.kitsune.tool.ToolManager;
@@ -38,6 +42,14 @@ public class Kitsune implements Runnable {
     public static final CustomLogger LOGGER = new CustomLogger();
     private boolean running;
 
+    static {
+        try {
+            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalError("VM does not support mandatory encoding UTF-8");
+        }
+    }
+
     @Override
     public void run() {
         init();
@@ -56,7 +68,7 @@ public class Kitsune implements Runnable {
                 Tool tool = TOOL_MANAGER.getTool(args.get(0));
                 if (tool == null) {
                     // TODO: Look into suggesting the closest tool to what's provided
-                    LOGGER.warn(tl("invalid_tool", args.get(0)));
+                    LOGGER.warn(tl("kitsune_invalid_tool", args.get(0)));
                     continue;
                 }
                 args.remove(0);

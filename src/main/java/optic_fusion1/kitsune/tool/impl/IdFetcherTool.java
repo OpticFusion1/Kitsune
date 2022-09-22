@@ -121,6 +121,7 @@ public class IdFetcherTool extends Tool {
             return false;
         }
         byte[] bytes = IOUtils.toByteArray(zipFile.getInputStream(entry));
+        // TODO: Improve check
         if (bytes != null && bytes.length >= 2) {
             char c = (char) bytes[0];
             char d = (char) bytes[1];
