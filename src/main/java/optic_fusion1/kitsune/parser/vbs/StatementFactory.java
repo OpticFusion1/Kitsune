@@ -22,7 +22,7 @@ TODO: Implement support for Sub functions
 Sub SubName( param1, param2 ) || Sub SubName(param1,param2) // Or other variants
     // Statements
 End Sub
-*/
+ */
 // TODO: Implement support for storing the values that variables get set to
 // TODO: Implement support for parsing operators (=, +, -, /, *, %)
 public class StatementFactory {
@@ -33,6 +33,7 @@ public class StatementFactory {
             // Statements
         End Function
      */
+    // TODO: Find a way to make a private static final Pattern variable for this classes's regex
     public static Function buildFunctionStatements(int index, String line) {
         Pattern pattern = Pattern.compile("( +.*?)\\(?", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
@@ -71,6 +72,7 @@ public class StatementFactory {
         VariableInit vinit = new VariableInit();
         vinit.setText(lineTrimmed);
         vinit.setLineNumber(index);
+        // TODO: Make private static final Pattern for this
         Pattern pattern;
         Matcher matcher = null;
         if (lineTrimmed.contains("As")) {
@@ -114,9 +116,10 @@ public class StatementFactory {
         return loop;
     }
 
+    private static final Pattern IF_STMNT_PATTERN = Pattern.compile("if(.+)then", Pattern.CASE_INSENSITIVE);
+
     public static IfStatement buildIFStatements(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("if(.+)then", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = IF_STMNT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         IfStatement ifstmt = new IfStatement();
         ifstmt.setText(lineTrimmed);
@@ -126,9 +129,10 @@ public class StatementFactory {
         return ifstmt;
     }
 
+    private static final Pattern SET_STMNT_PATTERN = Pattern.compile("Set (.+) ?= ?(.+)", Pattern.CASE_INSENSITIVE);
+
     public static SetStatement buildSetStatmenets(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("set (.+) ?= ?(.+)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = SET_STMNT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         VBStatement stmt = new VBStatement();
         stmt.setText(matcher.group(2));
@@ -136,9 +140,10 @@ public class StatementFactory {
         return setStmt;
     }
 
+    private static final Pattern ELSE_IF_STMNT_PATTERN = Pattern.compile("elseif(.+)then", Pattern.CASE_INSENSITIVE);
+
     public static ElseIfStatement buildElseIFStatements(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("elseif(.+)then", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = ELSE_IF_STMNT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         ElseIfStatement ifstmt = new ElseIfStatement();
         ifstmt.setText(lineTrimmed);
@@ -155,17 +160,19 @@ public class StatementFactory {
         return elsestmt;
     }
 
+    private static final Pattern MSG_BOX_STMNT_PATTERN = Pattern.compile("(msg|MsgBox) (.*)", Pattern.CASE_INSENSITIVE);
+
     public static MsgBoxStatement buildMsgBoxStatement(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("(msg|MsgBox) (.*)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = MSG_BOX_STMNT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         MsgBoxStatement statement = new MsgBoxStatement(matcher.group(2));
         return statement;
     }
 
+    private static final Pattern CONST_STMNT_PATTERN = Pattern.compile("Const (.*) = (.*)", Pattern.CASE_INSENSITIVE);
+
     public static ConstStatement buildConstStatements(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("Const (.*) = (.*)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = CONST_STMNT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         String name = matcher.group(1);
         String value = matcher.group(2);
@@ -173,9 +180,10 @@ public class StatementFactory {
         return statement;
     }
 
+    private static final Pattern COMMENT_PATTERN = Pattern.compile("' ? (.*)");
+
     public static Comment buildComments(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("' ?(.*)");
-        Matcher matcher = pattern.matcher(lineTrimmed);
+        Matcher matcher = COMMENT_PATTERN.matcher(lineTrimmed);
         matcher.find();
         String value = matcher.group(1);
         Comment comment = new Comment(value);

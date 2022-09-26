@@ -20,6 +20,7 @@ import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -28,9 +29,12 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-
         if (isMethodInsnNodeCorrect(methodInsnNode, "interrupt", "()V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            if (minus1 instanceof FieldInsnNode) {
+                log(classNode, methodNode, methodInsnNode, tl("thread_interrupted"));
+                return;
+            }
             if (isMethodInsnNodeCorrect((MethodInsnNode) minus1, "currentThread", "()Ljava/lang/Thread;")) {
                 log(classNode, methodNode, methodInsnNode, tl("current_thread_interrupted"));
                 return;

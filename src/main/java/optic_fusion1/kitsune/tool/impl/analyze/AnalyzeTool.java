@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.apk.ApkAnalyzerTool;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.html.HTMLAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.JavaAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.vbs.VBSAnalyzer;
@@ -40,6 +41,7 @@ public class AnalyzeTool extends Tool {
         ANALYZERS.put("jar", javaAnalyzer);
         ANALYZERS.put("html", new HTMLAnalyzer());
         ANALYZERS.put("vbs", new VBSAnalyzer());
+        ANALYZERS.put("apk", new ApkAnalyzerTool());
     }
 
     @Override

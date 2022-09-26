@@ -30,6 +30,10 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;)V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
+            if (!(minus1 instanceof LdcInsnNode)) {
+                log(classNode, methodNode, methodInsnNode, "File created");
+                return;
+            }
             String fileName = (String) ((LdcInsnNode) minus1).cst;
             log(classNode, methodNode, methodInsnNode, tl("fca_named_file_created", fileName));
             return;
@@ -37,6 +41,10 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             AbstractInsnNode minus2 = minus1.getPrevious();
+            if (!(minus1 instanceof LdcInsnNode) || !(minus2 instanceof LdcInsnNode)) {
+                log(classNode, methodNode, methodInsnNode, "File created");
+                return;
+            }
             String fileName = (String) ((LdcInsnNode) minus1).cst;
             String directoryName = (String) ((LdcInsnNode) minus2).cst;
             log(classNode, methodNode, methodInsnNode, tl("fca_named_file_created_dir", fileName, directoryName));
@@ -50,9 +58,6 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "mkdir", "()Z") || isMethodInsnNodeCorrect(methodInsnNode, "mkdirs", "()Z")) {
             log(classNode, methodNode, methodInsnNode, tl("fca_dir_created"));
             return;
-        }
-        if (isMethodInsnNodeCorrect(methodInsnNode, "delete", "()Z")) {
-            log(classNode, methodNode, methodInsnNode, tl("fca_file_deleted"));
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "createTempFile", "(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();

@@ -30,6 +30,7 @@ import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.AWTCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ClassCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.CodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.CryptoAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.FileCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.FilesCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.JNativeHookAnalyzer;
@@ -37,6 +38,7 @@ import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.JavassistAnaly
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.MethodCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.RuntimeCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SQLCodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ScriptCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.StreamCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SystemCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ThreadCodeAnalyzer;
@@ -81,11 +83,14 @@ public class JavaAnalyzer extends Analyzer {
         registerCodeAnalyzer("java/lang/Class", new ClassCodeAnalyzer());
         registerCodeAnalyzer("java/awt/Robot", new AWTCodeAnalyzer());
         registerCodeAnalyzer("java/awt/Toolkit", new AWTCodeAnalyzer());
+        registerCodeAnalyzer("java/awt/Desktop", new AWTCodeAnalyzer());
         registerCodeAnalyzer("java/lang/System", new SystemCodeAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/keyboard/NativeKeyEvent", new JNativeHookAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/GlobalScreen", new JNativeHookAnalyzer());
         registerCodeAnalyzer("java/nio/file/Files", new FilesCodeAnalyzer());
         registerCodeAnalyzer("javassist/CtMethod", new JavassistAnalyzer());
+        registerCodeAnalyzer("javax/crypto/", new CryptoAnalyzer());
+        registerCodeAnalyzer("javax/script/ScriptEngineManager", new ScriptCodeAnalyzer());
     }
 
     private void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
@@ -106,7 +111,7 @@ public class JavaAnalyzer extends Analyzer {
         for (FileAnalyzer analyzer : FILE_ANALYZERS) {
             analyzer.analyze(file);
         }
-        LOGGER.info(tl("ja_gathering_class_nodes"));
+        LOGGER.info(tl("ja_gathering_class_nodes", file.toPath()));
         List<ClassNode> classNodes = getClassNodesFromFile(file);
         if (classNodes.isEmpty()) {
             LOGGER.warn(tl("ja_class_nodes_not_found", file.toPath()));
