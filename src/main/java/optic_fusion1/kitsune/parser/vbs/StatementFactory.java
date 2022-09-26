@@ -35,7 +35,7 @@ public class StatementFactory {
      */
     // TODO: Find a way to make a private static final Pattern variable for this classes's regex
     public static Function buildFunctionStatements(int index, String line) {
-        Pattern pattern = Pattern.compile("( +.*?)\\(?", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("( +.*?)\\(", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
         matcher.find();
         Function func = new Function(matcher.group(1));
