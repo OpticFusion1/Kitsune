@@ -2,11 +2,13 @@ package optic_fusion1.kitsune.parser.vbs.domain;
 
 public enum DataType {
 
+    // TODO: Look to see if there's any other DataTypes that should be added to this
     STRING("String"),
     INT("Int"),
     VAR("var"),
-    ByVal("ByVal"),
-    ByRef("ByRef"),
+    BY_VAL("ByVal"),
+    BY_REF("ByRef"),
+    SINGLE("Single"),
     EMPTY("");
 
     private final String name;

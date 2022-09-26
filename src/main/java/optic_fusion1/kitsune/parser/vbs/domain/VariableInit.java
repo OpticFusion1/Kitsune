@@ -5,6 +5,7 @@ import java.util.List;
 
 public class VariableInit extends Statement {
 
+    private String name;
     private DataType variableType;
     private List<String> variables = new ArrayList<>();
 
@@ -23,6 +24,14 @@ public class VariableInit extends Statement {
 
     public void setVariableType(DataType variableType) {
         this.variableType = variableType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

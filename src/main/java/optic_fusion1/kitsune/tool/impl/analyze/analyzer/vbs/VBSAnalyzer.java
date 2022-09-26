@@ -8,6 +8,7 @@ import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
 import optic_fusion1.kitsune.parser.vbs.domain.MsgBoxStatement;
 import optic_fusion1.kitsune.parser.vbs.domain.SetStatement;
 import optic_fusion1.kitsune.parser.vbs.domain.Statement;
+import optic_fusion1.kitsune.parser.vbs.domain.VariableInit;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
 
 public class VBSAnalyzer extends Analyzer {
@@ -31,6 +32,12 @@ public class VBSAnalyzer extends Analyzer {
             }
             if (statement instanceof Comment comment) {
                 LOGGER.info("Comment: " + comment.getText());
+            }
+            if (statement instanceof VariableInit stmnt) {
+                LOGGER.info("Name: " + stmnt.getName() + " Variable Type: " + stmnt.getVariableType());
+                for (String variable : stmnt.getVariables()) {
+                    LOGGER.info("Variable: " + variable);
+                }
             }
         }
     }

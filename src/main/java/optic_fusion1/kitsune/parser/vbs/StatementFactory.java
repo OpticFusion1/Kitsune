@@ -25,6 +25,8 @@ End Sub
  */
 // TODO: Implement support for storing the values that variables get set to
 // TODO: Implement support for parsing operators (=, +, -, /, *, %)
+// TODO: Implement support for parsing things like Array(1,2) Array ()
+// TODO: Implement support for parsing function calls like reader.ReadFromFile WScript.Arguments(0) or WScript.Echo "Found barcode with type '" & reader.GetFoundBarcodeType(i) & "' and value '" & reader.GetFoundBarcodeValue(i) & "'"
 public class StatementFactory {
 
     /*
@@ -72,9 +74,18 @@ public class StatementFactory {
         VariableInit vinit = new VariableInit();
         vinit.setText(lineTrimmed);
         vinit.setLineNumber(index);
-        // TODO: Make private static final Pattern for this
         Pattern pattern;
-        Matcher matcher = null;
+        Matcher matcher;
+        if (lineTrimmed.contains(":") && lineTrimmed.contains("=")) {
+            // TODO: Check to see if this REGEX Pattern can be improved
+            pattern = Pattern.compile("Dim (.*) : (.*) = (.*)", Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(lineTrimmed);
+            matcher.find();
+            vinit.setName(matcher.group(1));
+            vinit.getVariables().add(matcher.group(3));
+            return vinit;
+        }
+        // TODO: Make private static final Pattern for this
         if (lineTrimmed.contains("As")) {
             pattern = Pattern.compile("Dim(.+?)As", Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(lineTrimmed);
@@ -180,7 +191,7 @@ public class StatementFactory {
         return statement;
     }
 
-    private static final Pattern COMMENT_PATTERN = Pattern.compile("' ? (.*)");
+    private static final Pattern COMMENT_PATTERN = Pattern.compile("'(.*)");
 
     public static Comment buildComments(int index, String lineTrimmed) {
         Matcher matcher = COMMENT_PATTERN.matcher(lineTrimmed);
