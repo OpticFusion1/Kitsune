@@ -2,12 +2,11 @@ package optic_fusion1.kitsune.tool.impl.analyze.analyzer.vbs;
 
 import java.io.File;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
-import optic_fusion1.kitsune.parser.vbs.Comment;
-import optic_fusion1.kitsune.parser.vbs.ConstStatement;
-import optic_fusion1.kitsune.parser.vbs.MsgBoxStatement;
-import optic_fusion1.kitsune.parser.vbs.Parameter;
-import optic_fusion1.kitsune.parser.vbs.SetStatement;
-import optic_fusion1.kitsune.parser.vbs.Statement;
+import optic_fusion1.kitsune.parser.vbs.domain.Comment;
+import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.MsgBoxStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.SetStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.Statement;
 import optic_fusion1.kitsune.parser.vbs.VBSParser;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
 

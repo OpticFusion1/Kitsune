@@ -5,8 +5,8 @@ public class StatementFilter {
 
     private Class filterClass;
 
-    public StatementFilter(Class clz) {
-        this.filterClass = clz;
+    public StatementFilter(Class clazz) {
+        this.filterClass = clazz;
     }
 
     public Class getFilterClass() {

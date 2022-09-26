@@ -1,11 +1,11 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.domain;
+
+import optic_fusion1.kitsune.parser.vbs.interfaces.IContainer;
 
 public abstract class Statement {
 
     private int lineNumber;
-
     private IContainer parent;
-
     private String text;
 
     public abstract Class<?> getType();

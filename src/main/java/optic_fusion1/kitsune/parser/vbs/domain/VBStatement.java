@@ -1,22 +1,20 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.domain;
+
+import optic_fusion1.kitsune.parser.vbs.interfaces.IContainer;
 
 public class VBStatement extends Statement {
 
     private String text;
-
     private IContainer parent;
-
     private int lineNumber;
 
     @Override
     public Class<?> getType() {
-
         return this.getClass();
     }
 
     @Override
     public String getText() {
-
         return text;
     }
 

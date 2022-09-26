@@ -1,4 +1,4 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.domain;
 
 import java.util.ArrayList;
 import java.util.List;

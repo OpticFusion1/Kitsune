@@ -1,5 +1,22 @@
 package optic_fusion1.kitsune.parser.vbs;
 
+import optic_fusion1.kitsune.parser.vbs.util.Utils;
+import optic_fusion1.kitsune.parser.vbs.interfaces.IContainer;
+import optic_fusion1.kitsune.parser.vbs.domain.VBStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.EmptyLineStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.Comment;
+import optic_fusion1.kitsune.parser.vbs.domain.LoopStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.ElseIfStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.Function;
+import optic_fusion1.kitsune.parser.vbs.domain.Statement;
+import optic_fusion1.kitsune.parser.vbs.domain.Constants;
+import optic_fusion1.kitsune.parser.vbs.domain.VariableInit;
+import optic_fusion1.kitsune.parser.vbs.domain.IfStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.ElseStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.SetStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.MsgBoxStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.FileContainer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -173,7 +190,6 @@ public class VBSParser {
     }
 
     private void popLastContainerFromStack() {
-
         if (containerStack.size() > 1) {
             containerStack.remove(containerStack.size() - 1);
         }
@@ -193,23 +209,17 @@ public class VBSParser {
 
     public List<String> getParsedStatementLines() {
         List<String> parsedLines = new ArrayList<>();
-
         parsedLines = visitContainersAndExtractRecursively(parsedLines, fileContainer);
-
         return parsedLines;
     }
 
     public List<Statement> getParsedStatements() {
-
         return flatStructuredStatements;
     }
 
     private List<String> visitContainersAndExtractRecursively(List<String> stmtList, IContainer container) {
-
         List<String> parsedStmtList = stmtList;
-
         List<Statement> statementsInContainer = container.getStatements();
-
         for (Statement st : statementsInContainer) {
             if (st instanceof IContainer iContainer) {
                 parsedStmtList.add(st.getText());
@@ -218,7 +228,6 @@ public class VBSParser {
                 parsedStmtList.add(st.getText());
             }
         }
-
         return parsedStmtList;
 
     }

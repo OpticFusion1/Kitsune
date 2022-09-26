@@ -1,9 +1,8 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.domain;
 
 public class Parameter {
 
     private String name;
-
     private DataType type;
 
     public Parameter(String name, DataType type) {

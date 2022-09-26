@@ -1,13 +1,15 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import optic_fusion1.kitsune.parser.vbs.interfaces.IContainer;
+import optic_fusion1.kitsune.parser.vbs.StatementFilter;
+import optic_fusion1.kitsune.parser.vbs.util.Utils;
 
-public class IfStatement extends Statement implements IContainer {
+public class ElseStatement extends Statement implements IContainer {
 
     private List<IContainer> childContainers = new ArrayList<>();
     private List<Statement> statements = new ArrayList<>();
-    private String condition;
 
     @Override
     public List<IContainer> getChildContainers() {
@@ -29,11 +31,4 @@ public class IfStatement extends Statement implements IContainer {
         return this.getClass();
     }
 
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
 }

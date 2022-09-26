@@ -1,6 +1,8 @@
-package optic_fusion1.kitsune.parser.vbs;
+package optic_fusion1.kitsune.parser.vbs.interfaces;
 
+import optic_fusion1.kitsune.parser.vbs.domain.Statement;
 import java.util.List;
+import optic_fusion1.kitsune.parser.vbs.StatementFilter;
 
 public interface IContainer {
 
