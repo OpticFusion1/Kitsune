@@ -24,10 +24,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import optic_fusion1.kitsune.parser.vbs.domain.ConstantPool;
 
 // TODO: Split this into a VBSFile class
 public class VBSParser {
 
+    private static final ConstantPool CONSTANT_POOL = new ConstantPool();
     private File vbsFile;
     private FileContainer fileContainer;
     private List<IContainer> containerStack;
@@ -47,6 +49,7 @@ public class VBSParser {
         containerStack.add(fileContainer);
     }
 
+    // TODO: Once the split to VBSFile and VBSParser is made, this should accept a VBSFile class
     public void parse() {
         sourceLines = Utils.getLines(vbsFile);
         for (int i = 0; i < sourceLines.size(); i++) {
@@ -155,6 +158,7 @@ public class VBSParser {
             statement.setParent(parent);
             parent.getStatements().add(statement);
             flatStructuredStatements.add(statement);
+            CONSTANT_POOL.addStatement(statement);
         } else if (lineTrimmed.toLowerCase().startsWith(Constants.COMMENT_IDENTIFIER)) {
             Comment comment = StatementFactory.buildComments(index, lineTrimmed);
             IContainer parent = getLastContainerFromStack();
@@ -230,6 +234,10 @@ public class VBSParser {
         }
         return parsedStmtList;
 
+    }
+    
+    public ConstantPool getConstantPool() {
+        return CONSTANT_POOL;
     }
 
 }

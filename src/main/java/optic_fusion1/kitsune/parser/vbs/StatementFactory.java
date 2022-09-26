@@ -156,13 +156,15 @@ public class StatementFactory {
     }
 
     public static MsgBoxStatement buildMsgBoxStatement(int index, String lineTrimmed) {
-        String message = lineTrimmed.replaceFirst("msg", "").replaceFirst("MsgBox", "");
-        MsgBoxStatement statement = new MsgBoxStatement(message);
+        Pattern pattern = Pattern.compile("(msg|MsgBox) (.*)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(lineTrimmed);
+        matcher.find();
+        MsgBoxStatement statement = new MsgBoxStatement(matcher.group(2));
         return statement;
     }
 
     public static ConstStatement buildConstStatements(int index, String lineTrimmed) {
-        Pattern pattern = Pattern.compile("Const (.*) = (.*)");
+        Pattern pattern = Pattern.compile("Const (.*) = (.*)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(lineTrimmed);
         matcher.find();
         String name = matcher.group(1);
