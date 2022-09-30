@@ -25,9 +25,31 @@ End Sub
  */
 // TODO: Implement support for storing the values that variables get set to
 // TODO: Implement support for parsing operators (=, +, -, /, *, %)
-// TODO: Implement support for parsing things like Array(1,2) Array ()
+// TODO: Implement support for parsing things like Array(1,2) or Array ()
 // TODO: Implement support for parsing function calls like reader.ReadFromFile WScript.Arguments(0) or WScript.Echo "Found barcode with type '" & reader.GetFoundBarcodeType(i) & "' and value '" & reader.GetFoundBarcodeValue(i) & "'"
+// TODO: Implement support for parsing Classes
+/*
+TODO: Implement support for parsing Property
+
+Public Property Get Connection()
+    // Statements
+End Property
+
+Public Property Get Fields(strField)
+    // Statements
+End Property
+
+Public Property Let AutoPercentEntry(blnAutoPercentEntry)
+	AutoPercentEntry = p_Excel.AutoPercentEntry
+End Property
+
+Public Property Set AutomationSecurity(objMsoAutomationSecurity)
+	Set p_Excel.AutomationSecurity = objMsoAutomationSecurity
+End Property
+
+*/
 public class StatementFactory {
+
 
     /*
         TODO: Implement support for
@@ -36,6 +58,7 @@ public class StatementFactory {
         End Function
      */
     // TODO: Find a way to make a private static final Pattern variable for this classes's regex
+    // TODO: Add support for getting if the function is Public, Private, or neither
     public static Function buildFunctionStatements(int index, String line) {
         Pattern pattern = Pattern.compile("( +.*?)\\(", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
@@ -66,10 +89,6 @@ public class StatementFactory {
         return func;
     }
 
-    /*
-        TODO: Implement support for
-        Dim dima : dima = Array("str", "str2",...)
-     */
     public static VariableInit buildVariableInitStatements(int index, String lineTrimmed) {
         VariableInit vinit = new VariableInit();
         vinit.setText(lineTrimmed);

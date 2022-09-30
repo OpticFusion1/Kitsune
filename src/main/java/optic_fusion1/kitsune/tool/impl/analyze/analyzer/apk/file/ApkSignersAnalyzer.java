@@ -18,7 +18,7 @@ public class ApkSignersAnalyzer extends ApkAnalyzer {
             for (ApkSigner signer : apkFile.getApkSingers()) {
                 LOGGER.info(signer.toString());
             }
-            // Currently not working
+            // TODO: Figure out why this throws exceptions
 //            for (ApkV2Signer signer : apkFile.getApkV2Singers()) {
 //                LOGGER.info(signer.toString());
 //            }

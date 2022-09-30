@@ -4,7 +4,7 @@
 
     <groupId>optic_fusion1</groupId>
     <artifactId>Kitsune</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
 
     <build>
         <resources>
@@ -70,6 +70,32 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>truezip-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>remove-a-file-in-sub-archive</id>
+                        <goals>
+                            <goal>remove</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <fileset>
+                                <directory>target/Kitsune.jar/META-INF</directory>
+                                <includes>
+                                    <include>AL2.0</include>
+                                    <include>BC1024KE.DSA</include>
+                                    <include>BC1024KE.SF</include>
+                                    <include>BC2048KE.DSA</include>
+                                    <include>BC2048KE.SF</include>
+                                </includes>
+                            </fileset>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

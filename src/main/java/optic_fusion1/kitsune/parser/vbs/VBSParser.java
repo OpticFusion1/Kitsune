@@ -27,6 +27,7 @@ import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.parser.vbs.domain.ConstantPool;
 
 // TODO: Split this into a VBSFile class
+// TODO: Rewrite entire Parser to be something like https://github.com/Dapqu/Programming-Language/
 public class VBSParser {
 
     private static final ConstantPool CONSTANT_POOL = new ConstantPool();
