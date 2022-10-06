@@ -15,6 +15,7 @@ import java.util.zip.ZipFile;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.Tool;
 import static optic_fusion1.kitsune.util.I18n.tl;
+import optic_fusion1.kitsune.util.Utils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -96,7 +97,8 @@ public class IdFetcherTool extends Tool {
                     // TODO: Handle nested entries
                     LOGGER.info(entry.getName() + " is actually a ZipFile.");
                 }
-                LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(entry.getName()));
+                // Don't SHA1 the entry itself. While it's possible there'll be false-positives depending on how this is used, it'll at least stay consistent
+                LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(Utils.normalize(entry.getName())));
             }
         } catch (IOException ex) {
             LOGGER.exception(ex);

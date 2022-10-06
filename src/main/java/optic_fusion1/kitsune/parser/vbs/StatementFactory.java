@@ -47,22 +47,25 @@ Public Property Set AutomationSecurity(objMsoAutomationSecurity)
 	Set p_Excel.AutomationSecurity = objMsoAutomationSecurity
 End Property
 
-*/
+ */
 public class StatementFactory {
 
-
-    /*
-        TODO: Implement support for
-        Function FUNCTIONNAME
-            // Statements
-        End Function
-     */
     // TODO: Find a way to make a private static final Pattern variable for this classes's regex
     // TODO: Add support for getting if the function is Public, Private, or neither
+    // TODO: Verify this works w/ every function statement possibility
     public static Function buildFunctionStatements(int index, String line) {
         Pattern pattern = Pattern.compile("( +.*?)\\(", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
         matcher.find();
+        if (matcher.groupCount() == 1) {
+            pattern = Pattern.compile("Function (.+)", Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(line);
+            matcher.find();
+            Function function = new Function(matcher.group(1));
+            function.setLineNumber(index);
+            function.setText(line);
+            return function;
+        }
         Function func = new Function(matcher.group(1));
         func.setLineNumber(index);
         func.setText(line);

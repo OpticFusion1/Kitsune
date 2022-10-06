@@ -31,7 +31,7 @@ public class VBSAnalyzer extends Analyzer {
                 continue;
             }
             if (statement instanceof Comment comment) {
-                LOGGER.info("Comment: " + comment.getText());
+                LOGGER.info("Comment: " + comment.value());
             }
             if (statement instanceof VariableInit stmnt) {
                 LOGGER.info("Name: " + stmnt.getName() + " Variable Type: " + stmnt.getVariableType());

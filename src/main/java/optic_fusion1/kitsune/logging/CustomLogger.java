@@ -19,9 +19,10 @@ package optic_fusion1.kitsune.logging;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -86,7 +87,7 @@ public class CustomLogger {
 
     private void createNewFileWriter() {
         try {
-            fileWriter = new BufferedWriter(new FileWriter(currentLogFile, true));
+            fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentLogFile), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }

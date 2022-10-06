@@ -38,15 +38,18 @@ public class FilesCodeAnalyzer extends CodeAnalyzer {
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "createFile", "(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;")) {
             log(classNode, methodNode, methodInsnNode, tl("fsca_creates_file"));
+            return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "setAttribute",
                 "(Ljava/nio/file/Path;Ljava/lang/String;Ljava/lang/Object;[Ljava/nio/file/LinkOption;)Ljava/nio/file/Path;")) {
             AbstractInsnNode minus5 = methodInsnNode.getPrevious().getPrevious().getPrevious().getPrevious().getPrevious();
             if (!(isAbstractNodeString(minus5))) {
                 log(classNode, methodNode, methodInsnNode, tl("fsca_file_attribute_set"));
+                return;
             }
             String attribute = (String) ((LdcInsnNode) minus5).cst;
             log(classNode, methodNode, methodInsnNode, tl("fsca_known_file_attribute_set", attribute));
+            return;
         }
     }
 

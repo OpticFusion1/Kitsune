@@ -35,6 +35,10 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
                 log(classNode, methodNode, methodInsnNode, tl("thread_interrupted"));
                 return;
             }
+            if (!(minus1 instanceof MethodInsnNode)) {
+                log(classNode, methodNode, methodInsnNode, tl("thread_interrupted"));
+                return;
+            }
             if (isMethodInsnNodeCorrect((MethodInsnNode) minus1, "currentThread", "()Ljava/lang/Thread;")) {
                 log(classNode, methodNode, methodInsnNode, tl("current_thread_interrupted"));
                 return;

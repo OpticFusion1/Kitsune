@@ -112,7 +112,12 @@ public class JavaAnalyzer extends Analyzer {
             analyzer.analyze(file);
         }
         LOGGER.info(tl("ja_gathering_class_nodes", file.toPath()));
-        List<ClassNode> classNodes = getClassNodesFromFile(file);
+        List<ClassNode> classNodes = new ArrayList<>();
+        try {
+            classNodes = getClassNodesFromFile(file);
+        } catch (Exception e) {
+
+        }
         if (classNodes.isEmpty()) {
             LOGGER.warn(tl("ja_class_nodes_not_found", file.toPath()));
             return;

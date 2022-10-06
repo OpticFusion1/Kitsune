@@ -236,7 +236,7 @@ public class VBSParser {
         return parsedStmtList;
 
     }
-    
+
     public ConstantPool getConstantPool() {
         return CONSTANT_POOL;
     }

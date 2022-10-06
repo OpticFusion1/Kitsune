@@ -37,7 +37,7 @@ public class SQLCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "prepareStatement", "(Ljava/lang/String;)Ljava/sql/PreparedStatement;")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
             if (!isAbstractNodeString(minus1)) {
-                log(classNode, methodNode, methodInsnNode, tl("sqlca_pa_credted"));
+                log(classNode, methodNode, methodInsnNode, tl("sqlca_ps_created"));
                 return;
             }
             String statement = (String) ((LdcInsnNode) minus1).cst;
