@@ -2,6 +2,7 @@ package optic_fusion1.kitsune.tool.impl.analyze.analyzer.vbs;
 
 import java.io.File;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import optic_fusion1.kitsune.parser.vbs.VBSFile;
 import optic_fusion1.kitsune.parser.vbs.VBSParser;
 import optic_fusion1.kitsune.parser.vbs.domain.Comment;
 import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
@@ -15,13 +16,13 @@ public class VBSAnalyzer extends Analyzer {
 
     @Override
     public void analyze(File input) {
-        VBSParser parser = new VBSParser(input);
-        parser.parse();
-        for (ConstStatement stmnt : parser.getConstantPool().getStatements()) {
+        VBSParser parser = new VBSParser();
+        parser.parse(new VBSFile(input));
+        for (ConstStatement stmnt : parser.getVBSFile().getConstantPool().getStatements()) {
             LOGGER.info("Const: " + stmnt.getName().trim() + " Value: " + stmnt.getValue());
         }
 
-        for (Statement statement : parser.getParsedStatements()) {
+        for (Statement statement : parser.getVBSFile().getParsedStatements()) {
             if (statement instanceof MsgBoxStatement stmnt) {
                 LOGGER.info("MsgBox: " + stmnt.getMessage());
                 continue;

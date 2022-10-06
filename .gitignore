@@ -120,3 +120,6 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 /.idea/
+
+
+*.vbs

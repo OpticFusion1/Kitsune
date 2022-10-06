@@ -167,27 +167,21 @@ public class StringsTool extends Tool {
         }
     }
 
-    // TODO: Improve this method
     private void printStrings(ClassNode classNode) {
-        boolean shouldPrintMethodStrings = true;
-        boolean shouldPrintFieldStrings = true;
-        if (classNode.methods.isEmpty()) {
-            LOGGER.info(tl("st_class_no_methods", classNode.name));
-            shouldPrintMethodStrings = false;
-        }
-        if (classNode.fields.isEmpty()) {
-            LOGGER.info(tl("st_class_no_fields", classNode.name));
-            shouldPrintFieldStrings = false;
-        }
-        if (shouldPrintMethodStrings) {
-            for (MethodNode method : classNode.methods) {
-                handleMethod(classNode, method);
-            }
-        }
-        if (shouldPrintFieldStrings) {
+        if (!classNode.fields.isEmpty()) {
             for (FieldNode field : classNode.fields) {
                 handleField(classNode, field);
             }
+        } else {
+            LOGGER.info(tl("st_class_no_methods", classNode.name));
+        }
+
+        if (!classNode.methods.isEmpty()) {
+            for (MethodNode method : classNode.methods) {
+                handleMethod(classNode, method);
+            }
+        } else {
+            LOGGER.info(tl("st_class_no_methods", classNode.name));
         }
     }
 

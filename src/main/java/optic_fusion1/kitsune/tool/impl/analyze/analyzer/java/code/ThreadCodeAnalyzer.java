@@ -48,16 +48,17 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
         }
         if (methodInsnNode.name.equals("sleep")) {
             AbstractInsnNode minus1 = methodInsnNode.getPrevious();
-            // TODO: Merge these two
-            if (isAbstractNodeLong(minus1)) {
-                Long millis = (Long) ((LdcInsnNode) minus1).cst;
+            if (isAbstractNodeString(minus1) || isAbstractNodeLong(minus1)) {
+                long millis = -1;
+                LdcInsnNode ldc = (LdcInsnNode) minus1;
+                if (ldc.cst instanceof Long value) {
+                    millis = value;
+                } else if (ldc.cst instanceof String value) {
+                    millis = Long.parseLong(value);
+                }
                 // TODO: Figure out a less bypassable number that still causes thread crash
                 boolean maxValue = millis == Long.MAX_VALUE;
                 log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis, maxValue));
-            }
-            if (isAbstractNodeString(minus1)) {
-                String millis = (String) ((LdcInsnNode) minus1).cst;
-                log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis));
                 return;
             }
             log(classNode, methodNode, methodInsnNode, tl("thread_sleep"));

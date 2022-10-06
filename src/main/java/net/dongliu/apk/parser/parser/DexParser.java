@@ -12,10 +12,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * parse dex file. current we only get the class name. see: http://source.android.com/devices/tech/dalvik/dex-format.html http://dexandroid.googlecode.com/svn/trunk/dalvik/libdex/DexFile.h
+ * parse dex file. currently we only get the class name. see: http://source.android.com/devices/tech/dalvik/dex-format.html http://dexandroid.googlecode.com/svn/trunk/dalvik/libdex/DexFile.h
  *
  * @author dongliu
  */
+// TODO: Get the source code for each dex class
 public class DexParser {
 
     private ByteBuffer buffer;
