@@ -18,11 +18,11 @@ public class VBSAnalyzer extends Analyzer {
     public void analyze(File input) {
         VBSParser parser = new VBSParser();
         parser.parse(new VBSFile(input));
-        for (ConstStatement stmnt : parser.getVBSFile().getConstantPool().getStatements()) {
+        for (ConstStatement stmnt : parser.vbsFile().getConstantPool().getStatements()) {
             LOGGER.info("Const: " + stmnt.getName().trim() + " Value: " + stmnt.getValue());
         }
 
-        for (Statement statement : parser.getVBSFile().getParsedStatements()) {
+        for (Statement statement : parser.vbsFile().getParsedStatements()) {
             if (statement instanceof MsgBoxStatement stmnt) {
                 LOGGER.info("MsgBox: " + stmnt.getMessage());
                 continue;

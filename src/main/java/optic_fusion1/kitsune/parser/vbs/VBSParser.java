@@ -32,14 +32,14 @@ public class VBSParser {
 
     public void parse(VBSFile vbsFile) {
         try {
-            checkFilExistance(vbsFile.getFile());
+            checkFilExistance(vbsFile.file());
         } catch (FileNotFoundException e) {
-            LOGGER.error("Can't find the file: " + vbsFile.getFile(), e);
+            LOGGER.error("Can't find the file: " + vbsFile.file(), e);
             return;
         }
         this.vbsFile = vbsFile;
 
-        List<String> sourceLines = Utils.getLines(vbsFile.getFile());
+        List<String> sourceLines = Utils.getLines(vbsFile.file());
         vbsFile.setSourceLines(sourceLines);
         for (int i = 0; i < sourceLines.size(); i++) {
             String line = sourceLines.get(i);
@@ -194,7 +194,7 @@ public class VBSParser {
 
     public List<String> getParsedStatementLines() {
         List<String> parsedLines = new ArrayList<>();
-        parsedLines = visitContainersAndExtractRecursively(parsedLines, vbsFile.getFileContainer());
+        parsedLines = visitContainersAndExtractRecursively(parsedLines, vbsFile.fileContainer());
         return parsedLines;
     }
 
@@ -213,7 +213,7 @@ public class VBSParser {
 
     }
 
-    public VBSFile getVBSFile() {
+    public VBSFile vbsFile() {
         return vbsFile;
     }
 

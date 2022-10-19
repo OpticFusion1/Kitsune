@@ -72,7 +72,8 @@ public class IdFetcherTool extends Tool {
             LOGGER.info("\n\n\n\n");
             LOGGER.info(tl("processing", file.getName()));
             try {
-                LOGGER.info(getSha1(new FileInputStream(file)));
+                LOGGER.info("File Hash: " + getSha1(new FileInputStream(file)));
+                LOGGER.info("File Path Hash: " + DigestUtils.sha1Hex(file.toString()));
             } catch (FileNotFoundException ex) {
                 LOGGER.exception(ex);
             }
@@ -88,8 +89,7 @@ public class IdFetcherTool extends Tool {
     }
 
     private void handleFile(File file) {
-        try {
-            ZipFile zipFile = new ZipFile(file);
+        try (ZipFile zipFile = new ZipFile(file)) {
             Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
             while (zipEntries.hasMoreElements()) {
                 ZipEntry entry = zipEntries.nextElement();
@@ -98,7 +98,7 @@ public class IdFetcherTool extends Tool {
                     LOGGER.info(entry.getName() + " is actually a ZipFile.");
                 }
                 // Don't SHA1 the entry itself. While it's possible there'll be false-positives depending on how this is used, it'll at least stay consistent
-                LOGGER.info(entry.getName() + ": " + DigestUtils.sha1Hex(Utils.normalize(entry.getName())));
+                LOGGER.info("Entry Hash: " + entry.getName() + ": " + DigestUtils.sha1Hex(Utils.normalize(entry.getName())));
             }
         } catch (IOException ex) {
             LOGGER.exception(ex);

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -199,6 +200,23 @@ public class StringsTool extends Tool {
         LOGGER.info(string);
     }
 
+    private static final Pattern PATTERN = Pattern.compile("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$");
+
+    private boolean isPossibleBase64(String string) {
+        if (string.isBlank() || string.getBytes().length < 2) {
+            return false;
+        }
+        return PATTERN.matcher(string).find();
+    }
+    
+    private String deobfBase64(String string) {
+        String deobf = string;
+        while (isPossibleBase64(deobf)) {
+            deobf = new String(Base64.getDecoder().decode(deobf));
+        }
+        return deobf;
+    }
+
     // TODO: Handle new String(new byte[] {})
     private void handleMethod(ClassNode classNode, MethodNode methodNode) {
         List<String> strings = new ArrayList<>();
@@ -219,7 +237,9 @@ public class StringsTool extends Tool {
             // TODO: Move Base64 to a general deobfuscation tool
             // TODO: Properly support Base64
             if (minus1 instanceof MethodInsnNode methodInsnNode && methodInsnNode.owner.equals("java/util/Base64")) {
-                decodedString = new String(Base64.getDecoder().decode(ldcInsnNode.cst.toString()));
+                decodedString = deobfBase64(ldcString);
+            } else if (isPossibleBase64(ldcString)) {
+                decodedString = deobfBase64(ldcString);
             }
             // TODO: Come up with a good way to make this translatable
             String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString + (decodedString.isBlank() ? "" : " Decoded: " + decodedString);

@@ -43,11 +43,11 @@ public class VBSFile {
         return CONSTANT_POOL;
     }
 
-    public File getFile() {
+    public File file() {
         return file;
     }
 
-    public FileContainer getFileContainer() {
+    public FileContainer fileContainer() {
         return fileContainer;
     }
     
