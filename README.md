@@ -1,10 +1,26 @@
 # Kitsune
 
-# What is Kitsune?
-Kitsune is a program that allows one to easily reverse engineer or analyze java, vbs, apk, and html files. Java 17 is required.
+# Introduction
+Kitsune is a program that allows one to easily reverse engineer or analyze a limited set of languages.
+Java 17 or higher must be installed.
+
+# Supported Languages
+Java, VBScript (Limited Support), APK (Limited Support), and HTML.
+Support for more languages will be added over time.
 
 # Usage
 All commands can be found in the [wiki](https://github.com/OpticFusion1/Kitsune/wiki)
+
+# Run
+Download a pre-compiled jar or build from source and then run the command `java -jar Kitsune.jar`
+
+# Build
+To build Kitsune from source
+```
+$ git clone git@github.com:OpticFusion1/Kitsune
+$ cd Kitsune/
+$ mvn clean install
+```
 
 # Example Output
 
