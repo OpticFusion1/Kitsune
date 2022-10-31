@@ -24,7 +24,11 @@ import optic_fusion1.kitsune.parser.vbs.domain.VariableInit;
 import optic_fusion1.kitsune.parser.vbs.interfaces.IContainer;
 import optic_fusion1.kitsune.parser.vbs.util.Utils;
 
-// TODO: Rewrite entire Parser to be something like https://github.com/Dapqu/Programming-Language/
+// TODO: Re-write this to have a tokenized Lexer & Parser, while still creating the necessary classes in optic_fusion1.kitsune.parser.vbs.domain.
+// Projects to look at are:
+// https://github.com/IraKorshunova/JavaCompiler
+// https://github.com/Dapqu/Programming-Language/
+// https://github.com/mohllal/semantic-analyzer
 public class VBSParser {
 
     private static final boolean DEBUG = true;

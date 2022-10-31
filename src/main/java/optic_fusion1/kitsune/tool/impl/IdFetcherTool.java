@@ -68,6 +68,7 @@ public class IdFetcherTool extends Tool {
             LOGGER.info(tl("file_is_not_directory", directory.getName()));
             return;
         }
+
         for (File file : directory.listFiles()) {
             LOGGER.info("\n\n\n\n");
             LOGGER.info(tl("processing", file.getName()));

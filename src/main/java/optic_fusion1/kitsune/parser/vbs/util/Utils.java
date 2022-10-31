@@ -17,7 +17,7 @@ public class Utils {
     public static List<Statement> filterStatements(List<Statement> list, StatementFilter filter) {
         List<Statement> result = new ArrayList<>();
         for (Statement item : list) {
-            if (item.getType().equals(filter.getFilterClass())) {
+            if (item.getType().equals(filter.filterClass())) {
                 result.add(item);
             }
         }

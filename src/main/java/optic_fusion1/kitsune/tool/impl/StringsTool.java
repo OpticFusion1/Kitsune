@@ -108,6 +108,7 @@ public class StringsTool extends Tool {
             try {
                 processFile(file);
             } catch (Exception e) {
+                LOGGER.exception(e);
             }
         }
     }
@@ -133,7 +134,7 @@ public class StringsTool extends Tool {
     private void handleClassFile(File inputFile) {
         ClassNode node = Utils.getClassNodeFromClassFile(inputFile);
         if (node == null) {
-            System.out.println("Couldn't get a ClassNode from " + inputFile);
+            LOGGER.warn("Couldn't get a ClassNode from " + inputFile);
             return;
         }
         printStrings(node);
@@ -149,12 +150,14 @@ public class StringsTool extends Tool {
                 }
                 InputStream inputStream = zipFile.getInputStream(entry);
                 if (inputStream == null) {
+                    LOGGER.warn("Couldn't get entry " + entry.getName() + " for file " + inputFile);
                     continue;
                 }
                 ClassReader classReader;
                 try {
                     classReader = new ClassReader(inputStream);
                 } catch (IOException e) {
+                    LOGGER.warn("Couldn't read InputStream for file " + inputFile);
                     continue;
                 }
                 ClassNode classNode = new ClassNode();
@@ -208,7 +211,7 @@ public class StringsTool extends Tool {
         }
         return PATTERN.matcher(string).find();
     }
-    
+
     private String deobfBase64(String string) {
         String deobf = string;
         while (isPossibleBase64(deobf)) {
