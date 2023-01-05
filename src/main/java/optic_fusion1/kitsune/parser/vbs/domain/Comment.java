@@ -32,5 +32,5 @@ public class Comment extends Statement {
     public String value() {
         return value;
     }
-    
+
 }

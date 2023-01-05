@@ -1,5 +1,11 @@
 package net.dongliu.apk.parser.parser;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import net.dongliu.apk.parser.exception.ParserException;
 import net.dongliu.apk.parser.struct.*;
 import net.dongliu.apk.parser.struct.resource.ResourceTable;
@@ -8,13 +14,6 @@ import net.dongliu.apk.parser.utils.Buffers;
 import net.dongliu.apk.parser.utils.Locales;
 import net.dongliu.apk.parser.utils.ParseUtils;
 import net.dongliu.apk.parser.utils.Strings;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 
 /**
  * Android Binary XML format see http://justanapplication.wordpress.com/category/android/android-binary-xml/

@@ -1,10 +1,9 @@
 package net.dongliu.apk.parser.parser;
 
-import net.dongliu.apk.parser.ApkParsers;
-import net.dongliu.apk.parser.bean.CertificateMeta;
-
 import java.security.cert.CertificateException;
 import java.util.List;
+import net.dongliu.apk.parser.ApkParsers;
+import net.dongliu.apk.parser.bean.CertificateMeta;
 
 /**
  * Parser certificate info. One apk may have multi certificates(certificate chain).

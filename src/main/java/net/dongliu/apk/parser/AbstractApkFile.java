@@ -1,5 +1,13 @@
 package net.dongliu.apk.parser;
 
+import java.io.Closeable;
+import java.io.IOException;
+import static java.lang.System.arraycopy;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.*;
 import net.dongliu.apk.parser.bean.*;
 import net.dongliu.apk.parser.exception.ParserException;
 import net.dongliu.apk.parser.parser.*;
@@ -11,16 +19,6 @@ import net.dongliu.apk.parser.struct.signingv2.SignerBlock;
 import net.dongliu.apk.parser.struct.zip.EOCD;
 import net.dongliu.apk.parser.utils.Buffers;
 import net.dongliu.apk.parser.utils.Unsigned;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.*;
-
-import static java.lang.System.arraycopy;
 
 /**
  * Common Apk Parser methods. This Class is not thread-safe.

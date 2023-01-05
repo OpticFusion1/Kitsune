@@ -1,8 +1,5 @@
 package net.dongliu.apk.parser;
 
-import net.dongliu.apk.parser.bean.ApkSignStatus;
-import net.dongliu.apk.parser.utils.Inputs;
-
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -12,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import net.dongliu.apk.parser.bean.ApkSignStatus;
+import net.dongliu.apk.parser.utils.Inputs;
 
 /**
  * Parse apk file from byte array. This class is not thread-safe

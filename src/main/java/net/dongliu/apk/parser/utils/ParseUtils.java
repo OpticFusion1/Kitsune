@@ -1,15 +1,14 @@
 package net.dongliu.apk.parser.utils;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import javax.annotation.Nullable;
 import net.dongliu.apk.parser.exception.ParserException;
 import net.dongliu.apk.parser.parser.StringPoolEntry;
 import net.dongliu.apk.parser.struct.ResValue;
 import net.dongliu.apk.parser.struct.ResourceValue;
 import net.dongliu.apk.parser.struct.StringPool;
 import net.dongliu.apk.parser.struct.StringPoolHeader;
-
-import javax.annotation.Nullable;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 
 /**
  * @author dongliu

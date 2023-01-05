@@ -4,7 +4,7 @@
 
     <groupId>optic_fusion1</groupId>
     <artifactId>Kitsune</artifactId>
-    <version>1.13.1</version>
+    <version>1.14</version>
 
     <build>
         <resources>

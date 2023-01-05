@@ -66,5 +66,5 @@ public class VBSFile {
     public FileContainer fileContainer() {
         return fileContainer;
     }
-    
+
 }

@@ -15,10 +15,9 @@
  */
 package net.dongliu.apk.parser.cert.pkcs7;
 
-import net.dongliu.apk.parser.cert.asn1.*;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import net.dongliu.apk.parser.cert.asn1.*;
 
 /**
  * PKCS #7 {@code SignedData} as specified in RFC 5652.

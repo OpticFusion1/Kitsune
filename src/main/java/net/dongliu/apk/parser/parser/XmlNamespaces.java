@@ -1,11 +1,10 @@
 package net.dongliu.apk.parser.parser;
 
-import net.dongliu.apk.parser.struct.xml.XmlNamespaceEndTag;
-import net.dongliu.apk.parser.struct.xml.XmlNamespaceStartTag;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.dongliu.apk.parser.struct.xml.XmlNamespaceEndTag;
+import net.dongliu.apk.parser.struct.xml.XmlNamespaceStartTag;
 
 /**
  * the xml file's namespaces.

@@ -16,9 +16,8 @@
  */
 package optic_fusion1.kitsune.shellparser.state;
 
-import optic_fusion1.kitsune.shellparser.ParseException;
-
 import java.util.List;
+import optic_fusion1.kitsune.shellparser.ParseException;
 
 public abstract class State {
 

@@ -1,11 +1,10 @@
 package net.dongliu.apk.parser.struct.xml;
 
+import java.util.Locale;
+import java.util.Map;
 import net.dongliu.apk.parser.struct.ResourceValue;
 import net.dongliu.apk.parser.struct.resource.ResourceTable;
 import net.dongliu.apk.parser.utils.ResourceLoader;
-
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * xml node attribute

@@ -1,9 +1,8 @@
 package net.dongliu.apk.parser.parser;
 
-import net.dongliu.apk.parser.utils.Strings;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.dongliu.apk.parser.utils.Strings;
 
 /**
  * attribute value constant

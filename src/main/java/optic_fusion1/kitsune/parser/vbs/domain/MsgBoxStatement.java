@@ -28,7 +28,7 @@ public class MsgBoxStatement extends Statement {
     public Class<?> getType() {
         return getClass();
     }
-    
+
     public String getMessage() {
         return message;
     }

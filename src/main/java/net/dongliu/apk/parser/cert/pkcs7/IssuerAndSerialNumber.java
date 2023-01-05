@@ -15,12 +15,11 @@
  */
 package net.dongliu.apk.parser.cert.pkcs7;
 
+import java.math.BigInteger;
 import net.dongliu.apk.parser.cert.asn1.Asn1Class;
 import net.dongliu.apk.parser.cert.asn1.Asn1Field;
 import net.dongliu.apk.parser.cert.asn1.Asn1OpaqueObject;
 import net.dongliu.apk.parser.cert.asn1.Asn1Type;
-
-import java.math.BigInteger;
 
 /**
  * PKCS #7 {@code IssuerAndSerialNumber} as specified in RFC 5652.

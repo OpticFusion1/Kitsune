@@ -28,7 +28,7 @@ public class AElementAnalyzer extends HTMLElementAnalyzer {
         for (Element element : elements) {
             String title = element.html();
             String url = element.attr("href");
-            LOGGER.info("Title: " + title+ " URL: " + url);
+            LOGGER.info("Title: " + title + " URL: " + url);
         }
         LOGGER.info("\t");
     }

@@ -1,9 +1,8 @@
 package net.dongliu.apk.parser.struct.xml;
 
+import java.util.Locale;
 import net.dongliu.apk.parser.struct.ResourceValue;
 import net.dongliu.apk.parser.struct.resource.ResourceTable;
-
-import java.util.Locale;
 
 /**
  * @author dongliu

@@ -1,14 +1,5 @@
 package net.dongliu.apk.parser.parser;
 
-import net.dongliu.apk.parser.bean.CertificateMeta;
-import net.dongliu.apk.parser.cert.asn1.Asn1BerParser;
-import net.dongliu.apk.parser.cert.asn1.Asn1DecodingException;
-import net.dongliu.apk.parser.cert.asn1.Asn1OpaqueObject;
-import net.dongliu.apk.parser.cert.pkcs7.ContentInfo;
-import net.dongliu.apk.parser.cert.pkcs7.Pkcs7Constants;
-import net.dongliu.apk.parser.cert.pkcs7.SignedData;
-import net.dongliu.apk.parser.utils.Buffers;
-
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.security.cert.Certificate;
@@ -17,6 +8,14 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import net.dongliu.apk.parser.bean.CertificateMeta;
+import net.dongliu.apk.parser.cert.asn1.Asn1BerParser;
+import net.dongliu.apk.parser.cert.asn1.Asn1DecodingException;
+import net.dongliu.apk.parser.cert.asn1.Asn1OpaqueObject;
+import net.dongliu.apk.parser.cert.pkcs7.ContentInfo;
+import net.dongliu.apk.parser.cert.pkcs7.Pkcs7Constants;
+import net.dongliu.apk.parser.cert.pkcs7.SignedData;
+import net.dongliu.apk.parser.utils.Buffers;
 
 /**
  * Parser certificate info using jsse.

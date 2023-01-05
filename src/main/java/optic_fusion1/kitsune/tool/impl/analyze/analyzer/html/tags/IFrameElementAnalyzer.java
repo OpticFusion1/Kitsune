@@ -31,7 +31,7 @@ public class IFrameElementAnalyzer extends HTMLElementAnalyzer {
             double height = Double.parseDouble(element.attr("height"));
             double width = Double.parseDouble(element.attr("width"));
             String style = element.attr("style");
-            
+
             StringBuilder builder = new StringBuilder();
             builder.append("Source: ").append(source).append(" ");
             builder.append("height: ").append(height).append(" ");

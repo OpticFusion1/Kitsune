@@ -1,15 +1,14 @@
 package net.dongliu.apk.parser.parser;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import net.dongliu.apk.parser.bean.DexClass;
 import net.dongliu.apk.parser.exception.ParserException;
 import net.dongliu.apk.parser.struct.StringPool;
 import net.dongliu.apk.parser.struct.dex.DexClassStruct;
 import net.dongliu.apk.parser.struct.dex.DexHeader;
 import net.dongliu.apk.parser.utils.Buffers;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * parse dex file. currently we only get the class name. see: http://source.android.com/devices/tech/dalvik/dex-format.html http://dexandroid.googlecode.com/svn/trunk/dalvik/libdex/DexFile.h

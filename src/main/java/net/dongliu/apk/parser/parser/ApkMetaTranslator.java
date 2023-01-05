@@ -1,5 +1,8 @@
 package net.dongliu.apk.parser.parser;
 
+import java.util.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.dongliu.apk.parser.bean.*;
 import net.dongliu.apk.parser.struct.ResourceValue;
 import net.dongliu.apk.parser.struct.resource.Densities;
@@ -7,10 +10,6 @@ import net.dongliu.apk.parser.struct.resource.ResourceEntry;
 import net.dongliu.apk.parser.struct.resource.ResourceTable;
 import net.dongliu.apk.parser.struct.resource.Type;
 import net.dongliu.apk.parser.struct.xml.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 /**
  * trans binary xml to apk meta info

@@ -1,11 +1,10 @@
 package net.dongliu.apk.parser.struct.resource;
 
+import java.nio.ByteBuffer;
+import java.util.Locale;
 import net.dongliu.apk.parser.struct.StringPool;
 import net.dongliu.apk.parser.utils.Buffers;
 import net.dongliu.apk.parser.utils.ParseUtils;
-
-import java.nio.ByteBuffer;
-import java.util.Locale;
 
 /**
  * @author dongliu

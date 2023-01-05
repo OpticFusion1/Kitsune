@@ -15,9 +15,6 @@
  */
 package net.dongliu.apk.parser.cert.asn1;
 
-import net.dongliu.apk.parser.cert.asn1.ber.*;
-import net.dongliu.apk.parser.utils.Buffers;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
@@ -26,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import net.dongliu.apk.parser.cert.asn1.ber.*;
+import net.dongliu.apk.parser.utils.Buffers;
 
 /**
  * Parser of ASN.1 BER-encoded structures.

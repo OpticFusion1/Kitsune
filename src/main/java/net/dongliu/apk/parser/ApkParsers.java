@@ -1,10 +1,9 @@
 package net.dongliu.apk.parser;
 
-import net.dongliu.apk.parser.bean.ApkMeta;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import net.dongliu.apk.parser.bean.ApkMeta;
 
 /**
  * Convenient utils method for parse apk file

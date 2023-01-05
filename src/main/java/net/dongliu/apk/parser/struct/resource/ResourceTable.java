@@ -1,11 +1,10 @@
 package net.dongliu.apk.parser.struct.resource;
 
+import java.util.*;
+import javax.annotation.Nonnull;
 import net.dongliu.apk.parser.struct.ResourceValue;
 import net.dongliu.apk.parser.struct.StringPool;
 import net.dongliu.apk.parser.utils.ResourceLoader;
-
-import javax.annotation.Nonnull;
-import java.util.*;
 
 /**
  * The apk resource table

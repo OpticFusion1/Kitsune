@@ -16,22 +16,22 @@
  */
 package optic_fusion1.kitsune.parser.vbs;
 
-import optic_fusion1.kitsune.parser.vbs.domain.Parameter;
-import optic_fusion1.kitsune.parser.vbs.domain.VBStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.Comment;
-import optic_fusion1.kitsune.parser.vbs.domain.LoopStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.ElseIfStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.VariableInit;
-import optic_fusion1.kitsune.parser.vbs.domain.IfStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.ElseStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.MsgBoxStatement;
-import optic_fusion1.kitsune.parser.vbs.domain.SetStatement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import optic_fusion1.kitsune.parser.vbs.domain.Comment;
+import optic_fusion1.kitsune.parser.vbs.domain.ConstStatement;
 import optic_fusion1.kitsune.parser.vbs.domain.Constants;
 import optic_fusion1.kitsune.parser.vbs.domain.DataType;
+import optic_fusion1.kitsune.parser.vbs.domain.ElseIfStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.ElseStatement;
 import optic_fusion1.kitsune.parser.vbs.domain.Function;
+import optic_fusion1.kitsune.parser.vbs.domain.IfStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.LoopStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.MsgBoxStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.Parameter;
+import optic_fusion1.kitsune.parser.vbs.domain.SetStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.VBStatement;
+import optic_fusion1.kitsune.parser.vbs.domain.VariableInit;
 
 /*
 TODO: Implement support for Sub functions

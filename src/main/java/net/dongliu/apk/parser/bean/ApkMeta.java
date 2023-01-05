@@ -1,10 +1,9 @@
 package net.dongliu.apk.parser.bean;
 
-import net.dongliu.apk.parser.AbstractApkFile;
-
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
+import net.dongliu.apk.parser.AbstractApkFile;
 
 /**
  * Apk meta info

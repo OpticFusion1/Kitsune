@@ -16,30 +16,27 @@
  */
 package optic_fusion1.kitsune.tool.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.Tool;
+import static optic_fusion1.kitsune.util.I18n.tl;
+import optic_fusion1.kitsune.util.Utils;
 import static optic_fusion1.kitsune.util.Utils.checkFileExists;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-import static optic_fusion1.kitsune.Kitsune.LOGGER;
-import static optic_fusion1.kitsune.util.I18n.tl;
-import optic_fusion1.kitsune.util.Utils;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.objectweb.asm.tree.MethodInsnNode;
 
 // TODO: Cleanup class if possible
 public class StringsTool extends Tool {
@@ -79,7 +76,7 @@ public class StringsTool extends Tool {
                 return;
             }
             if (!input.getName().endsWith(".jar") && !input.getName().endsWith(".class")) {
-                LOGGER.info(tl("file_invalid_extension", input.toPath()));
+                LOGGER.info(tl("invalid_extension", input.toPath()));
                 return;
             }
             if (input.isDirectory()) {
@@ -121,7 +118,7 @@ public class StringsTool extends Tool {
             return;
         }
         if (!inputFile.getName().endsWith(".jar") && !inputFile.getName().endsWith(".class")) {
-            LOGGER.info(tl("file_invalid_extension", inputFile.toPath()));
+            LOGGER.info(tl("invalid_extension", inputFile.toPath()));
             return;
         }
         if (inputFile.getName().endsWith(".jar")) {
@@ -177,7 +174,7 @@ public class StringsTool extends Tool {
                 handleField(classNode, field);
             }
         } else {
-            LOGGER.info(tl("st_class_no_methods", classNode.name));
+            LOGGER.info(tl("st_class_no_fields", classNode.name));
         }
 
         if (!classNode.methods.isEmpty()) {
@@ -203,23 +200,6 @@ public class StringsTool extends Tool {
         LOGGER.info(string);
     }
 
-    private static final Pattern PATTERN = Pattern.compile("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$");
-
-    private boolean isPossibleBase64(String string) {
-        if (string.isBlank() || string.getBytes().length < 2) {
-            return false;
-        }
-        return PATTERN.matcher(string).find();
-    }
-
-    private String deobfBase64(String string) {
-        String deobf = string;
-        while (isPossibleBase64(deobf)) {
-            deobf = new String(Base64.getDecoder().decode(deobf));
-        }
-        return deobf;
-    }
-
     // TODO: Handle new String(new byte[] {})
     private void handleMethod(ClassNode classNode, MethodNode methodNode) {
         List<String> strings = new ArrayList<>();
@@ -227,38 +207,33 @@ public class StringsTool extends Tool {
             if (!(instruction instanceof LdcInsnNode ldcInsnNode)) {
                 continue;
             }
-            if (!(ldcInsnNode.cst instanceof String)) {
+            if (!(ldcInsnNode.cst instanceof String string)) {
                 continue;
             }
-
-            String ldcString = ldcInsnNode.cst.toString();
-            AbstractInsnNode minus1 = instruction.getPrevious();
-            if (normalize) {
-                ldcString = Utils.normalize(ldcString);
+            // TODO: Add decoding Base64 support. 
+            // There was previously support for it however certain strings caused a false-positive, which broke the SHA1 hash
+            String normalizedString = normalize ? Utils.normalize(string) : "";
+            String sha1Hash = showSha1Hash ? DigestUtils.sha1Hex(normalizedString.isEmpty() ? string : normalizedString) : "";
+            StringBuilder builder = new StringBuilder();
+            builder.append(classNode.name).append("#");
+            builder.append(methodNode.name).append(": ");
+            builder.append("Original String: ").append(string);
+            if (!normalizedString.isBlank()) {
+                builder.append(" Normalized: ").append(normalizedString);
             }
-            String decodedString = "";
-            // TODO: Move Base64 to a general deobfuscation tool
-            // TODO: Properly support Base64
-            if (minus1 instanceof MethodInsnNode methodInsnNode && methodInsnNode.owner.equals("java/util/Base64")) {
-                decodedString = deobfBase64(ldcString);
-            } else if (isPossibleBase64(ldcString)) {
-                decodedString = deobfBase64(ldcString);
+            if (!sha1Hash.isBlank()) {
+                builder.append(" SHA1 Hash: ").append(sha1Hash);
             }
-            // TODO: Come up with a good way to make this translatable
-            String finalString = classNode.name + "#" + methodNode.name + ": " + ldcString + (decodedString.isBlank() ? "" : " Decoded: " + decodedString);
-            String sha1Hash = "";
-            if (showSha1Hash) {
-                sha1Hash = DigestUtils.sha1Hex(ldcString);
-            }
+            String finalString = builder.toString();
             if (removeDuplicateStrings) {
                 if (strings.contains(finalString)) {
                     continue;
                 }
-                LOGGER.info(finalString + (showSha1Hash ? ": " + sha1Hash : ""));
+                LOGGER.info(finalString);
                 strings.add(finalString);
                 continue;
             }
-            LOGGER.info(finalString + (showSha1Hash ? ": " + sha1Hash : ""));
+            LOGGER.info(finalString);
         }
     }
 

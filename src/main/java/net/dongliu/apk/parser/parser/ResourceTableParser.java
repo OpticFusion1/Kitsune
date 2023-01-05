@@ -1,22 +1,20 @@
 package net.dongliu.apk.parser.parser;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import net.dongliu.apk.parser.exception.ParserException;
 import net.dongliu.apk.parser.struct.ChunkHeader;
 import net.dongliu.apk.parser.struct.ChunkType;
+import static net.dongliu.apk.parser.struct.ChunkType.UNKNOWN_YET;
 import net.dongliu.apk.parser.struct.StringPool;
 import net.dongliu.apk.parser.struct.StringPoolHeader;
 import net.dongliu.apk.parser.struct.resource.*;
 import net.dongliu.apk.parser.utils.Buffers;
 import net.dongliu.apk.parser.utils.Pair;
 import net.dongliu.apk.parser.utils.ParseUtils;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import static net.dongliu.apk.parser.struct.ChunkType.UNKNOWN_YET;
 
 /**
  * Parse android resource table file.

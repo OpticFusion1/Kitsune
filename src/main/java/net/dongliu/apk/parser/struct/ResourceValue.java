@@ -1,10 +1,9 @@
 package net.dongliu.apk.parser.struct;
 
-import net.dongliu.apk.parser.struct.resource.*;
-import net.dongliu.apk.parser.utils.Locales;
-
 import java.util.List;
 import java.util.Locale;
+import net.dongliu.apk.parser.struct.resource.*;
+import net.dongliu.apk.parser.utils.Locales;
 
 /**
  * Resource entity, contains the resource id, should retrieve the value from resource table, or string pool if it is a string resource.

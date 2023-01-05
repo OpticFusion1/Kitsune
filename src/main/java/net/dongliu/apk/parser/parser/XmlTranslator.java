@@ -1,9 +1,8 @@
 package net.dongliu.apk.parser.parser;
 
+import java.util.List;
 import net.dongliu.apk.parser.struct.xml.*;
 import net.dongliu.apk.parser.utils.xml.XmlEscaper;
-
-import java.util.List;
 
 /**
  * trans to xml text when parse binary xml file.
