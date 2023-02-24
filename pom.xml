@@ -164,7 +164,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.15.3</version>
+            <version>1.15.4</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -193,7 +193,7 @@
     </dependencies>
 
     <properties>
-        <project.asmVer>9.3</project.asmVer>
+        <project.asmVer>9.4</project.asmVer>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
