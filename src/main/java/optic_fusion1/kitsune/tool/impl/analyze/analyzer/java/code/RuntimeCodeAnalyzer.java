@@ -36,9 +36,11 @@ public class RuntimeCodeAnalyzer extends CodeAnalyzer {
             }
             String execCommand = (String) ((LdcInsnNode) minus1).cst;
             log(classNode, methodNode, methodInsnNode, tl("rca_exec_known", execCommand));
+            return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getRuntime", "()Ljava/lang/Runtime;")) {
             log(classNode, methodNode, methodInsnNode, tl("rca_runtime_instance"));
+            return;
         }
     }
 

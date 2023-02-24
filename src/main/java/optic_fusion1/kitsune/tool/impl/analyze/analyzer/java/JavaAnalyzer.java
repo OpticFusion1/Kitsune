@@ -39,8 +39,10 @@ import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.MethodCodeAnal
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.RuntimeCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SQLCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ScriptCodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SocketCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.StreamCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SystemCodeAnalyzer;
+import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.SystemHookCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ThreadCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.URLCodeAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.code.ZipEntryCodeAnalyzer;
@@ -91,6 +93,8 @@ public class JavaAnalyzer extends Analyzer {
         registerCodeAnalyzer("javassist/CtMethod", new JavassistAnalyzer());
         registerCodeAnalyzer("javax/crypto/", new CryptoAnalyzer());
         registerCodeAnalyzer("javax/script/ScriptEngineManager", new ScriptCodeAnalyzer());
+        registerCodeAnalyzer("java/net/Socket", new SocketCodeAnalyzer());
+        registerCodeAnalyzer("lc/kra/system/keyboard/GlobalKeyboardHook", new SystemHookCodeAnalyzer());
     }
 
     private void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
@@ -131,6 +135,7 @@ public class JavaAnalyzer extends Analyzer {
 
         // Logs Fields
         for (FieldNode node : classNode.fields) {
+            // TODO: Add support for analyzing FieldNodes
             log(classNode, node);
         }
 
@@ -181,6 +186,7 @@ public class JavaAnalyzer extends Analyzer {
                 classReader.accept(classNode, 0);
                 classNodes.add(classNode);
             }
+            zipFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

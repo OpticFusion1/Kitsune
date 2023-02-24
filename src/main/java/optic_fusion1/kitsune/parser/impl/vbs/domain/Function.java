@@ -66,7 +66,7 @@ public class Function extends Statement implements IContainer {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
 }

@@ -31,15 +31,15 @@ public class QuoteState extends State {
     @Override
     public List<String> parse(final String parsing, final String accumulator, final List<String> parsed, final State referrer) throws ParseException {
         if (parsing.isEmpty()) {
-            throw new ParseException(tl("qs_parse_exception", this.quote));
+            throw new ParseException(tl("qs_parse_exception", quote));
         }
         final char c = (char) parsing.getBytes()[0];
         if (c == '\\') {
             return new EscapeState().parse(parsing.substring(1), accumulator, parsed, this);
         }
-        if (c == this.quote) {
+        if (c == quote) {
             return new StartState().parse(parsing.substring(1), accumulator, parsed, this);
         }
-        return new QuoteState(this.quote).parse(parsing.substring(1), accumulator + c, parsed, this);
+        return new QuoteState(quote).parse(parsing.substring(1), accumulator + c, parsed, this);
     }
 }

@@ -27,6 +27,7 @@ public class MethodCodeAnalyzer extends CodeAnalyzer {
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "invoke", "(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;")) {
             log(classNode, methodNode, methodInsnNode, "Method#invoke");
+            return;
         }
     }
 

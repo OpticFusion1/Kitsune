@@ -26,7 +26,7 @@ public class Comment extends Statement {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
     public String value() {

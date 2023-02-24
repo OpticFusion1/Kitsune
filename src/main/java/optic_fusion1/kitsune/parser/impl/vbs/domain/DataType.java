@@ -39,7 +39,7 @@ public enum DataType {
 
     @Override
     public String toString() {
-        return this.name;
+        return name;
     }
 
     public static DataType fromString(String text) {

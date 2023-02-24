@@ -46,7 +46,7 @@ public class AWTCodeAnalyzer extends CodeAnalyzer {
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "browse", "(Ljava/net/URI;)V")) {
-            log(classNode, methodNode, methodInsnNode, "Opens a file");
+            log(classNode, methodNode, methodInsnNode, "Opens a website");
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "mousePress", "(I)V;")) {
@@ -59,6 +59,10 @@ public class AWTCodeAnalyzer extends CodeAnalyzer {
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "mouseMove", "(II)V;")) {
             log(classNode, methodNode, methodInsnNode, "Moves the mouse");
+            return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "open", "(Ljava/io/File;)V")) {
+            log(classNode, methodNode, methodInsnNode, "Opens a file");
             return;
         }
     }

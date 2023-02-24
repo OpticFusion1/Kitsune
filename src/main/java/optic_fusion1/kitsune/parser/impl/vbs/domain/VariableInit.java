@@ -31,7 +31,7 @@ public class VariableInit extends Statement {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
     public DataType getVariableType() {

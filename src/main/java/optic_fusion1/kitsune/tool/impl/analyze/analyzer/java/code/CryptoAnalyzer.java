@@ -38,6 +38,7 @@ public class CryptoAnalyzer extends CodeAnalyzer {
                 return;
             }
             LOGGER.info("Creates a Cipher instance with the transformation " + (String) ((LdcInsnNode) previous).cst);
+            return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "<init>", "([BLjava/lang/String;)V")) {
             LOGGER.info("Initializes a SecretKeySpec");

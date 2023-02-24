@@ -46,6 +46,7 @@ public class ZipEntryCodeAnalyzer extends CodeAnalyzer {
             }
             String zipEntryName = (String) ((LdcInsnNode) plus1).cst;
             log(classNode, methodNode, methodInsnNode, tl("zeca_gets_named_zipentry_name", zipEntryName));
+            return;
         }
     }
 

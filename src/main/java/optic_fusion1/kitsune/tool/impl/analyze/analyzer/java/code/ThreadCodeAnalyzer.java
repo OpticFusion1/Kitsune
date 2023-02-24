@@ -56,12 +56,11 @@ public class ThreadCodeAnalyzer extends CodeAnalyzer {
                 } else if (ldc.cst instanceof String value) {
                     millis = Long.parseLong(value);
                 }
-                // TODO: Figure out a less bypassable number that still causes thread crash
-                boolean maxValue = millis == Long.MAX_VALUE;
-                log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis, maxValue));
+                log(classNode, methodNode, methodInsnNode, tl("thread_sleep_long", millis));
                 return;
             }
             log(classNode, methodNode, methodInsnNode, tl("thread_sleep"));
+            return;
         }
     }
 }

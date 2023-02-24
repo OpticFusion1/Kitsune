@@ -44,6 +44,7 @@ public class JNativeHookAnalyzer extends CodeAnalyzer {
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getRawCode", "()I")) {
             log(classNode, methodNode, methodInsnNode, tl("jnha_get_nke_rawcode"));
+            return;
         }
     }
 

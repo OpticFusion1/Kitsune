@@ -58,7 +58,7 @@ public class CustomLogger {
         }
         createNewFile();
         createNewFileWriter();
-        this.toLog = new LinkedBlockingQueue<>();
+        toLog = new LinkedBlockingQueue<>();
         startAsyncWriter();
     }
 

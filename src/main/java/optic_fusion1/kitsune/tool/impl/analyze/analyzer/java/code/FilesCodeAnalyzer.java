@@ -51,6 +51,10 @@ public class FilesCodeAnalyzer extends CodeAnalyzer {
             log(classNode, methodNode, methodInsnNode, tl("fsca_known_file_attribute_set", attribute));
             return;
         }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "setPosixFilePermissions", "(Ljava/nio/file/Path;Ljava/util/Set;)Ljava/nio/file/Path;")) {
+            log(classNode, methodNode, methodInsnNode, "Sets Posix File Permissions");
+            return;
+        }
     }
 
 }

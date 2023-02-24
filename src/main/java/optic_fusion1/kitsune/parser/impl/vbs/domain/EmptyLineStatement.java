@@ -20,7 +20,7 @@ public class EmptyLineStatement extends Statement {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
 }

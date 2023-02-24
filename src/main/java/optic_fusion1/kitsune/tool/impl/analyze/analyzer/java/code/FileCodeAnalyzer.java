@@ -90,6 +90,17 @@ public class FileCodeAnalyzer extends CodeAnalyzer {
             return;
 
         }
+
+        if (isMethodInsnNodeCorrect(methodInsnNode, "exists", "()Z")) {
+            if (methodInsnNode.getPrevious() instanceof MethodInsnNode minus1) {
+                if (isMethodInsnNodeCorrect(minus1, "<init>", "(Ljava/lang/String;)V")) {
+                    if (minus1.getPrevious() instanceof LdcInsnNode ldcInsnNode && ldcInsnNode.cst instanceof String string) {
+                        log(classNode, methodNode, methodInsnNode, "Checks if the file " + string + " exists");
+                        return;
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -28,6 +28,7 @@ public class JavassistAnalyzer extends CodeAnalyzer {
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
         if (isMethodInsnNodeCorrect(methodInsnNode, "insertAfter", "(Ljava/lang/String;)V")) {
             log(classNode, methodNode, methodInsnNode, tl("ja_code_injection"));
+            return;
         }
     }
 

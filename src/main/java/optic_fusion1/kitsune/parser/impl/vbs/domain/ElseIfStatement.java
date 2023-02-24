@@ -45,7 +45,7 @@ public class ElseIfStatement extends Statement implements IContainer {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
     public String getCondition() {

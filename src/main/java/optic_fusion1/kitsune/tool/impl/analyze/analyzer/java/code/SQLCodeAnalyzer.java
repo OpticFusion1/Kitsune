@@ -46,6 +46,7 @@ public class SQLCodeAnalyzer extends CodeAnalyzer {
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getConnection", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/sql/Connection;")) {
             log(classNode, methodNode, methodInsnNode, tl("sqlca_ps_connection_get"));
+            return;
         }
     }
 

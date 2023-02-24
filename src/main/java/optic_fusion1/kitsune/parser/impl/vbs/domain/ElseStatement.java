@@ -44,7 +44,7 @@ public class ElseStatement extends Statement implements IContainer {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
 }

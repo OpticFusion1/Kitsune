@@ -23,7 +23,6 @@ import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.Tool;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.BatchAnalyzer;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.apk.ApkAnalyzerTool;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.html.HTMLAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.JavaAnalyzer;
 import optic_fusion1.kitsune.tool.impl.analyze.analyzer.VBSAnalyzer;
@@ -42,7 +41,6 @@ public class AnalyzeTool extends Tool {
         ANALYZERS.put("jar", javaAnalyzer);
         ANALYZERS.put("html", new HTMLAnalyzer());
         ANALYZERS.put("vbs", new VBSAnalyzer());
-        ANALYZERS.put("apk", new ApkAnalyzerTool());
         ANALYZERS.put("bat", new BatchAnalyzer());
     }
 

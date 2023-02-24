@@ -10,7 +10,7 @@ public class StartStatement extends Statement {
     public StartStatement(String file) {
         this.file = file;
     }
-    
+
     public String getFile() {
         return file;
     }

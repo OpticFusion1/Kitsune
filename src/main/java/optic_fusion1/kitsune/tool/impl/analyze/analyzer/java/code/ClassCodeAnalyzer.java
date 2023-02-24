@@ -67,6 +67,7 @@ public class ClassCodeAnalyzer extends CodeAnalyzer {
             }
             String resourceName = (String) ((LdcInsnNode) minus1).cst;
             log(classNode, methodNode, methodInsnNode, tl("cca_gets_known_resource", resourceName));
+            return;
         }
     }
 

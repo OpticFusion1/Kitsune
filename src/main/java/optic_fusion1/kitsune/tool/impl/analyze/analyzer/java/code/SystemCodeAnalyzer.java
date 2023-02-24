@@ -28,13 +28,13 @@ public class SystemCodeAnalyzer extends CodeAnalyzer {
 
     @Override
     public void analyze(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode) {
-
         if (isMethodInsnNodeCorrect(methodInsnNode, "getProperty", "(Ljava/lang/String;)Ljava/lang/String;")) {
             getAndLog(classNode, methodNode, methodInsnNode, tl("sysca_property"));
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getenv", "(Ljava/lang/String;)Ljava/lang/String;")) {
             getAndLog(classNode, methodNode, methodInsnNode, tl("sysca_environment"));
+            return;
         }
     }
 
@@ -42,7 +42,7 @@ public class SystemCodeAnalyzer extends CodeAnalyzer {
     private void getAndLog(ClassNode classNode, MethodNode methodNode, MethodInsnNode methodInsnNode, String type) {
         AbstractInsnNode minus1 = methodInsnNode.getPrevious();
         if (!isAbstractNodeString(minus1)) {
-            log(classNode, methodNode, methodInsnNode, tl("sysca_get_type"));
+            log(classNode, methodNode, methodInsnNode, tl("sysca_get_type", type));
             return;
         }
         String varName = (String) ((LdcInsnNode) minus1).cst;

@@ -32,9 +32,12 @@ import optic_fusion1.kitsune.util.Utils;
 import static optic_fusion1.kitsune.util.Utils.checkFileExists;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -204,10 +207,20 @@ public class StringsTool extends Tool {
     private void handleMethod(ClassNode classNode, MethodNode methodNode) {
         List<String> strings = new ArrayList<>();
         for (AbstractInsnNode instruction : methodNode.instructions) {
-            if (!(instruction instanceof LdcInsnNode ldcInsnNode)) {
-                continue;
+            String string = "";
+            if (instruction instanceof LdcInsnNode ldcInsnNode && ldcInsnNode.cst instanceof String) {
+                string = (String) ldcInsnNode.cst;
+            } else {
+                // TODO: Skip over the instructions found via this method so the single chars don't get printed
+                if (instruction.getOpcode() == Opcodes.BIPUSH) {
+                    IntInsnNode intInsnNode = (IntInsnNode) instruction;
+                    string = readStringArray(intInsnNode);
+                    if (string.isBlank()) {
+                        continue;
+                    }
+                }
             }
-            if (!(ldcInsnNode.cst instanceof String string)) {
+            if (string.isBlank()) {
                 continue;
             }
             // TODO: Add decoding Base64 support. 
@@ -235,6 +248,25 @@ public class StringsTool extends Tool {
             }
             LOGGER.info(finalString);
         }
+    }
+
+    private String readStringArray(IntInsnNode intInsnNode) {
+        if (intInsnNode.getNext().getOpcode() != Opcodes.ANEWARRAY) {
+            return "";
+        }
+        int numOfElements = intInsnNode.operand;
+        return parseStringElement(intInsnNode, 0, numOfElements, "");
+    }
+
+    private String parseStringElement(AbstractInsnNode insnNode, int timesRan, int maxElements, String string) {
+        if (timesRan == maxElements) {
+            return string;
+        }
+        LdcInsnNode node = (LdcInsnNode) insnNode.getNext().getNext().getNext().getNext();
+        String s = (String) node.cst;
+        string += s;
+        timesRan++;
+        return parseStringElement(node, timesRan, maxElements, string);
     }
 
 }

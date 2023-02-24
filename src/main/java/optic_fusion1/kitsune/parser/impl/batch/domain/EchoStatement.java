@@ -10,7 +10,7 @@ public class EchoStatement extends Statement {
     public EchoStatement(String value) {
         this.value = value;
     }
-    
+
     public String value() {
         return value;
     }

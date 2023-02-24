@@ -26,7 +26,7 @@ public class VBStatement extends Statement {
 
     @Override
     public Class<?> getType() {
-        return this.getClass();
+        return getClass();
     }
 
     @Override

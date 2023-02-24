@@ -152,7 +152,7 @@ public class I18n {
 
         FileResClassLoader(final ClassLoader classLoader) {
             super(classLoader);
-            this.dataFolder = new File("AntiMalware");
+            dataFolder = new File("AntiMalware");
         }
 
         @Override

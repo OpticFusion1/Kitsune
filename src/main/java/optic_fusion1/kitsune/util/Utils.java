@@ -116,11 +116,12 @@ public final class Utils {
             ClassReader classReader;
             try {
                 classReader = new ClassReader(inputStream);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 return null;
             }
             ClassNode classNode = new ClassNode();
             classReader.accept(classNode, 0);
+            inputStream.close();
             return classNode;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(StringsTool.class.getName()).log(Level.SEVERE, null, ex);

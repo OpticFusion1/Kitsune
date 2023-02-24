@@ -17,7 +17,7 @@ public class BatchAnalyzer extends Analyzer {
             if (statement instanceof StartStatement stmnt) {
                 LOGGER.info("Runs the program: " + stmnt.getFile());
             }
-            
+
         }
     }
 
