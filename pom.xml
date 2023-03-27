@@ -193,7 +193,7 @@
     </dependencies>
 
     <properties>
-        <project.asmVer>9.4</project.asmVer>
+        <project.asmVer>9.5</project.asmVer>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
