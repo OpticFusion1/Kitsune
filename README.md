@@ -5,7 +5,7 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 Java 17 or higher must be installed.
 
 # Supported Languages
-Java, VBScript (Limited Support), APK (Limited Support), and HTML.
+Java, VBScript (Limited Support), and HTML.
 Support for more languages will be added over time.
 
 # Usage
