@@ -17,31 +17,21 @@
 package optic_fusion1.kitsune.tool.impl.analyze;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
+import optic_fusion1.kitsune.analyzer.AnalyzerManager;
 import optic_fusion1.kitsune.tool.Tool;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.Analyzer;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.BatchAnalyzer;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.html.HTMLAnalyzer;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.java.JavaAnalyzer;
-import optic_fusion1.kitsune.tool.impl.analyze.analyzer.VBSAnalyzer;
 import static optic_fusion1.kitsune.util.I18n.tl;
 import static optic_fusion1.kitsune.util.Utils.checkFileExists;
 import org.apache.commons.io.FilenameUtils;
 
 public class AnalyzeTool extends Tool {
 
-    private static final HashMap<String, Analyzer> ANALYZERS = new HashMap<>();
-
-    public AnalyzeTool() {
+    private AnalyzerManager analyzerManager;
+    
+    public AnalyzeTool(AnalyzerManager analyzerManager) {
         super("analyze", tl("at_desc"));
-        JavaAnalyzer javaAnalyzer = new JavaAnalyzer();
-        ANALYZERS.put("java", javaAnalyzer);
-        ANALYZERS.put("jar", javaAnalyzer);
-        ANALYZERS.put("html", new HTMLAnalyzer());
-        ANALYZERS.put("vbs", new VBSAnalyzer());
-        ANALYZERS.put("bat", new BatchAnalyzer());
+        this.analyzerManager = analyzerManager;
     }
 
     @Override
@@ -90,11 +80,11 @@ public class AnalyzeTool extends Tool {
         if (extension.isBlank()) {
             return false;
         }
-        if (!ANALYZERS.containsKey(extension)) {
+        if (!analyzerManager.supportsExtension(extension)) {
             LOGGER.info(tl("file_unsupported_extension", extension));
             return false;
         }
-        ANALYZERS.get(extension).analyze(input);
+        analyzerManager.getAnalyzerForExtension(extension).analyze(input);
         return true;
     }
 

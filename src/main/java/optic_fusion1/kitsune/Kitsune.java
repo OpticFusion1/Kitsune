@@ -22,6 +22,7 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Scanner;
+import optic_fusion1.kitsune.analyzer.AnalyzerManager;
 import optic_fusion1.kitsune.logging.CustomLogger;
 import optic_fusion1.kitsune.shellparser.ParseException;
 import optic_fusion1.kitsune.shellparser.ShellParser;
@@ -37,6 +38,7 @@ import static optic_fusion1.kitsune.util.I18n.tl;
 
 public class Kitsune implements Runnable {
 
+    private static final AnalyzerManager ANALYZER_MANAGER = new AnalyzerManager();
     private static final ToolManager TOOL_MANAGER = new ToolManager();
     private static final Scanner SCANNER = new Scanner(System.in);
     public static final CustomLogger LOGGER = new CustomLogger();
@@ -82,7 +84,8 @@ public class Kitsune implements Runnable {
     private void init() {
         running = true;
         loadI18n();
-        registerTools(new StringsTool(), new AnalyzeTool(), new FixTool(), new NormalizeTool(), new IdFetcherTool());
+        registerTools(new StringsTool(), new AnalyzeTool(ANALYZER_MANAGER), new FixTool(),
+                new NormalizeTool(), new IdFetcherTool());
     }
 
     private void loadI18n() {
@@ -103,6 +106,10 @@ public class Kitsune implements Runnable {
 
     public ToolManager getToolManager() {
         return TOOL_MANAGER;
+    }
+    
+    public AnalyzerManager getAnalyzerManager() {
+        return ANALYZER_MANAGER;
     }
 
 }
