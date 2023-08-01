@@ -97,7 +97,7 @@ public class JavaAnalyzer extends Analyzer {
         registerCodeAnalyzer("lc/kra/system/keyboard/GlobalKeyboardHook", new SystemHookCodeAnalyzer());
     }
 
-    private void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
+    public void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
         CODE_ANALYZERS.putIfAbsent(methodInsnNodeOwner, analyzer);
     }
 

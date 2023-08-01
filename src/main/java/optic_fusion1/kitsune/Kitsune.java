@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -35,6 +36,8 @@ import optic_fusion1.kitsune.tool.impl.StringsTool;
 import optic_fusion1.kitsune.tool.impl.analyze.AnalyzeTool;
 import optic_fusion1.kitsune.util.I18n;
 import static optic_fusion1.kitsune.util.I18n.tl;
+import org.pf4j.DefaultPluginManager;
+import org.pf4j.PluginManager;
 
 public class Kitsune implements Runnable {
 
@@ -43,10 +46,16 @@ public class Kitsune implements Runnable {
     private static final Scanner SCANNER = new Scanner(System.in);
     public static final CustomLogger LOGGER = new CustomLogger();
     private boolean running;
+    private static Kitsune INSTANCE;
 
     static {
         try {
             System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
+            System.setProperty("pf4j.pluginsDir", "kitsune/plugins");
+            File pluginsDirectory = new File("kitsune", "plugins");
+            if (!pluginsDirectory.exists()) {
+                pluginsDirectory.mkdirs();
+            }
         } catch (UnsupportedEncodingException e) {
             throw new InternalError("VM does not support mandatory encoding UTF-8");
         }
@@ -54,6 +63,7 @@ public class Kitsune implements Runnable {
 
     @Override
     public void run() {
+        INSTANCE = this;
         init();
         LOGGER.info(tl("kitsune_program_loaded"));
         handleCLI();
@@ -86,6 +96,10 @@ public class Kitsune implements Runnable {
         loadI18n();
         registerTools(new StringsTool(), new AnalyzeTool(ANALYZER_MANAGER), new FixTool(),
                 new NormalizeTool(), new IdFetcherTool());
+
+        PluginManager pluginManager = new DefaultPluginManager();
+        pluginManager.loadPlugins();
+        pluginManager.startPlugins();
     }
 
     private void loadI18n() {
@@ -107,9 +121,13 @@ public class Kitsune implements Runnable {
     public ToolManager getToolManager() {
         return TOOL_MANAGER;
     }
-    
+
     public AnalyzerManager getAnalyzerManager() {
         return ANALYZER_MANAGER;
     }
 
+    public static Kitsune getInstance() {
+        return INSTANCE;
+    }
+    
 }

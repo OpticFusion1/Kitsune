@@ -4,7 +4,7 @@
 
     <groupId>optic_fusion1</groupId>
     <artifactId>Kitsune</artifactId>
-    <version>1.17</version>
+    <version>1.18</version>
 
     <build>
         <resources>
@@ -190,6 +190,11 @@
             <version>1.70</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.pf4j</groupId>
+            <artifactId>pf4j</artifactId>
+            <version>3.9.0</version>
+        </dependency>   
     </dependencies>
 
     <properties>
