@@ -33,6 +33,7 @@ import optic_fusion1.kitsune.analyzer.java.code.CodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.CryptoAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.FileCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.FilesCodeAnalyzer;
+import optic_fusion1.kitsune.analyzer.java.code.InetAddressAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.JNativeHookAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.JavassistAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.MethodCodeAnalyzer;
@@ -41,6 +42,7 @@ import optic_fusion1.kitsune.analyzer.java.code.SQLCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.ScriptCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.SocketCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.StreamCodeAnalyzer;
+import optic_fusion1.kitsune.analyzer.java.code.SunNativeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.SystemCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.SystemHookCodeAnalyzer;
 import optic_fusion1.kitsune.analyzer.java.code.ThreadCodeAnalyzer;
@@ -54,6 +56,7 @@ import static optic_fusion1.kitsune.util.Utils.log;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -80,12 +83,23 @@ public class JavaAnalyzer extends Analyzer {
         registerCodeAnalyzer("java/io/FileInputStream", new StreamCodeAnalyzer("FileInputStream"));
         registerCodeAnalyzer("java/io/FileOutputStream", new StreamCodeAnalyzer("FileOutputStream"));
         registerCodeAnalyzer("java/io/ObjectOutputStream", new StreamCodeAnalyzer("ObjectOutputStream"));
+        registerCodeAnalyzer("java/io/DataOutputStream", new StreamCodeAnalyzer("DataOutputStream"));
+        registerCodeAnalyzer("java/io/ByteArrayOutputStream", new StreamCodeAnalyzer("ByteArrayOutputStream"));
+        registerCodeAnalyzer("java/util/zip/GZIPOutputStream", new StreamCodeAnalyzer("GZIPOutputStream"));
+        registerCodeAnalyzer("java/util/zip/GZIPInputStream", new StreamCodeAnalyzer("GZIPInputStream"));
+        registerCodeAnalyzer("java/io/ByteArrayOutputStream", new StreamCodeAnalyzer("ByteArrayOutputStream"));
+        registerCodeAnalyzer("java/io/InputStreamReader", new StreamCodeAnalyzer("InputStreamReader"));
+        registerCodeAnalyzer("java/io/BufferedReader", new StreamCodeAnalyzer("BufferedReader"));
+        registerCodeAnalyzer("java/io/FileWriter", new StreamCodeAnalyzer("FileWriter"));
+        registerCodeAnalyzer("java/io/PrintWriter", new StreamCodeAnalyzer("PrintWriter"));
         registerCodeAnalyzer("java/sql/Connection", new SQLCodeAnalyzer("Connection"));
         registerCodeAnalyzer("java/sql/DriverManager", new SQLCodeAnalyzer("DriverManager"));
         registerCodeAnalyzer("java/lang/Class", new ClassCodeAnalyzer());
-        registerCodeAnalyzer("java/awt/Robot", new AWTCodeAnalyzer());
-        registerCodeAnalyzer("java/awt/Toolkit", new AWTCodeAnalyzer());
-        registerCodeAnalyzer("java/awt/Desktop", new AWTCodeAnalyzer());
+        AWTCodeAnalyzer awtCodeAnalyzer = new AWTCodeAnalyzer();
+        registerCodeAnalyzer("java/awt/Robot", awtCodeAnalyzer);
+        registerCodeAnalyzer("java/awt/Toolkit", awtCodeAnalyzer);
+        registerCodeAnalyzer("java/awt/Desktop", awtCodeAnalyzer);
+        registerCodeAnalyzer("java/awt/datatransfer/Clipboard", awtCodeAnalyzer);
         registerCodeAnalyzer("java/lang/System", new SystemCodeAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/keyboard/NativeKeyEvent", new JNativeHookAnalyzer());
         registerCodeAnalyzer("com/github/kwhat/jnativehook/GlobalScreen", new JNativeHookAnalyzer());
@@ -95,6 +109,8 @@ public class JavaAnalyzer extends Analyzer {
         registerCodeAnalyzer("javax/script/ScriptEngineManager", new ScriptCodeAnalyzer());
         registerCodeAnalyzer("java/net/Socket", new SocketCodeAnalyzer());
         registerCodeAnalyzer("lc/kra/system/keyboard/GlobalKeyboardHook", new SystemHookCodeAnalyzer());
+        registerCodeAnalyzer("com/sun/jna/Native", new SunNativeAnalyzer());
+        registerCodeAnalyzer("java/net/InetAddress", new InetAddressAnalyzer());
     }
 
     public void registerCodeAnalyzer(String methodInsnNodeOwner, CodeAnalyzer analyzer) {
@@ -105,7 +121,7 @@ public class JavaAnalyzer extends Analyzer {
         registerFileAnalyzer(new ManifestMFFileAnalyzer());
     }
 
-    private void registerFileAnalyzer(FileAnalyzer analyzer) {
+    public void registerFileAnalyzer(FileAnalyzer analyzer) {
         FILE_ANALYZERS.add(analyzer);
     }
 
@@ -138,7 +154,6 @@ public class JavaAnalyzer extends Analyzer {
             // TODO: Add support for analyzing FieldNodes
             log(classNode, node);
         }
-
         // Processes Methods
         for (MethodNode methodNode : classNode.methods) {
 
@@ -152,6 +167,9 @@ public class JavaAnalyzer extends Analyzer {
 
             // Analyzes each instruction
             for (AbstractInsnNode instruction : methodNode.instructions) {
+                if (instruction instanceof FieldInsnNode field) {
+                    log(classNode, field);
+                }
                 if (instruction instanceof MethodInsnNode method) {
                     String owner = method.owner;
                     CodeAnalyzer analyzer = CODE_ANALYZERS.get(owner);

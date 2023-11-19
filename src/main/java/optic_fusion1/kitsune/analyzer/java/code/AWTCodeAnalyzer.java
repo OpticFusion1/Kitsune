@@ -39,6 +39,7 @@ public class AWTCodeAnalyzer extends CodeAnalyzer {
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getSystemClipboard", "()Ljava/awt/datatransfer/Clipboard")) {
+            log(classNode, methodNode, methodInsnNode, "Gets the system clipboard");
             return;
         }
         if (isMethodInsnNodeCorrect(methodInsnNode, "getScreenSize", "()Ljava/awt/Dimension;")) {
@@ -64,6 +65,12 @@ public class AWTCodeAnalyzer extends CodeAnalyzer {
         if (isMethodInsnNodeCorrect(methodInsnNode, "open", "(Ljava/io/File;)V")) {
             log(classNode, methodNode, methodInsnNode, "Opens a file");
             return;
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "setContents", "(Ljava/awt/datatransfer/Transferable;Ljava/awt/datatransfer/ClipboardOwner;)V")) {
+            log(classNode, methodNode, methodInsnNode, "Sets the clipboard's contents");
+        }
+        if (isMethodInsnNodeCorrect(methodInsnNode, "getContents", "(Ljava/lang/Object;)Ljava/awt/datatransfer/Transferable;")) {
+            log(classNode, methodNode, methodInsnNode, "Gets the clipboard's contents");
         }
     }
 

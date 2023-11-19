@@ -33,8 +33,7 @@ public class ManifestMFFileAnalyzer extends FileAnalyzer {
 
     @Override
     public void analyze(File file) {
-        try {
-            ZipFile zipFile = new ZipFile(file);
+        try (ZipFile zipFile = new ZipFile(file)) {
             ZipEntry entry = zipFile.getEntry("META-INF/MANIFEST.MF");
             if (entry == null) {
                 LOGGER.info(tl("mf_file_not_found", file.toPath()));

@@ -39,6 +39,7 @@ import optic_fusion1.kitsune.tool.impl.StringsTool;
 import static optic_fusion1.kitsune.util.I18n.tl;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.ParameterNode;
 
@@ -57,6 +58,11 @@ public final class Utils {
         return file.exists();
     }
 
+    
+    public static void log(ClassNode classNode, FieldInsnNode fieldNode) {
+        LOGGER.info(tl("ja_field_insn_node", classNode.name, fieldNode.name, fieldNode.desc));
+    }
+    
     public static void log(ClassNode classNode, FieldNode fieldNode) {
         LOGGER.info(tl("utils_log_field", classNode.name, fieldNode.name, fieldNode.desc, fieldNode.signature, fieldNode.value));
     }

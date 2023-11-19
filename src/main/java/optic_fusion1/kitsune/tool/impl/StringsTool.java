@@ -262,6 +262,9 @@ public class StringsTool extends Tool {
         if (timesRan == maxElements) {
             return string;
         }
+        if (!(insnNode instanceof LdcInsnNode)) {
+            return "";
+        }
         LdcInsnNode node = (LdcInsnNode) insnNode.getNext().getNext().getNext().getNext();
         String s = (String) node.cst;
         string += s;
