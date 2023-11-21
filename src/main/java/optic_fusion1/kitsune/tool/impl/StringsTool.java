@@ -72,7 +72,7 @@ public class StringsTool extends Tool {
             args.remove("--showSHA1Hash");
             showSha1Hash = true;
         }
-        if (!args.get(0).equalsIgnoreCase("all")) {
+        if (!"all".equalsIgnoreCase(args.get(0))) {
             File input = new File(args.get(0));
             if (!checkFileExists(input)) {
                 LOGGER.info(tl("file_does_not_exist", input.toPath()));

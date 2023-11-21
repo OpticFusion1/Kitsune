@@ -59,7 +59,7 @@ public class IdFetcherTool extends Tool {
             args.remove("--logInnerFiles");
             logInnerFiles = true;
         }
-        if (!args.get(0).equalsIgnoreCase("all")) {
+        if (!"all".equalsIgnoreCase(args.get(0))) {
             File file = new File(args.get(0));
             if (!file.exists()) {
                 LOGGER.info(tl("file_does_not_exist", file.getName()));

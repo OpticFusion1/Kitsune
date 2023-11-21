@@ -40,7 +40,7 @@ public class AnalyzeTool extends Tool {
             LOGGER.warn(tl("not_enough_args") + " " + tl("at_usage"));
             return;
         }
-        if (args.get(0).equalsIgnoreCase("all")) {
+        if ("all".equalsIgnoreCase(args.get(0))) {
             handleAll(args);
             return;
         }
