@@ -195,13 +195,26 @@
             <artifactId>pf4j</artifactId>
             <version>3.10.0</version>
         </dependency>   
-    </dependencies>
+      <dependency>
+         <groupId>io.github.pixee</groupId>
+         <artifactId>java-security-toolkit</artifactId>
+      </dependency>
+   </dependencies>
 
     <properties>
         <project.asmVer>9.5</project.asmVer>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+      <versions.java-security-toolkit>1.0.7</versions.java-security-toolkit>
+   </properties>
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>io.github.pixee</groupId>
+            <artifactId>java-security-toolkit</artifactId>
+            <version>${versions.java-security-toolkit}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
 </project>

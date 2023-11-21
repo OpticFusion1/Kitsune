@@ -16,6 +16,7 @@
  */
 package optic_fusion1.kitsune.parser.impl.vbs.util;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,7 +47,7 @@ public class Utils {
         try {
             String sCurrentLine;
             br = new BufferedReader(new FileReader(inputfile));
-            while ((sCurrentLine = br.readLine()) != null) {
+            while ((sCurrentLine = BoundedLineReader.readLine(br, 5_000_000)) != null) {
                 lines.add(sCurrentLine);
             }
         } catch (IOException e) {
