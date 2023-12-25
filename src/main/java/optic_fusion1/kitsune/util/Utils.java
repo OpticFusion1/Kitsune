@@ -28,11 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.coley.cafedude.InvalidClassException;
-import me.coley.cafedude.classfile.ClassFile;
-import me.coley.cafedude.io.ClassFileReader;
-import me.coley.cafedude.io.ClassFileWriter;
-import me.coley.cafedude.transform.IllegalStrippingTransformer;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.Main;
 import optic_fusion1.kitsune.tool.impl.StringsTool;
@@ -42,6 +37,11 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.ParameterNode;
+import software.coley.cafedude.InvalidClassException;
+import software.coley.cafedude.classfile.ClassFile;
+import software.coley.cafedude.io.ClassFileReader;
+import software.coley.cafedude.io.ClassFileWriter;
+import software.coley.cafedude.transform.IllegalStrippingTransformer;
 
 public final class Utils {
 

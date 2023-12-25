@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-import me.coley.cafedude.InvalidClassException;
 import static optic_fusion1.kitsune.Kitsune.LOGGER;
 import optic_fusion1.kitsune.tool.Tool;
 import static optic_fusion1.kitsune.util.I18n.tl;
@@ -39,6 +38,7 @@ import static optic_fusion1.kitsune.util.Utils.writeToFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassWriter;
+import software.coley.cafedude.InvalidClassException;
 
 public class FixTool extends Tool {
 
