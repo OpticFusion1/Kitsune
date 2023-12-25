@@ -16,17 +16,17 @@ public class AnalyzerManager {
         ANALYZERS.put("vbs", new VBSAnalyzer());
         ANALYZERS.put("bat", new BatchAnalyzer());
     }
-    
+
     public boolean supportsExtension(String name) {
         return ANALYZERS.containsKey(name);
     }
-    
+
     public Analyzer getAnalyzerForExtension(String extension) {
         return ANALYZERS.get(extension);
     }
-    
-    public JavaAnalyzer getJavaAnalyzer() {
-        return JAVA_ANALYZER;
+
+    public void addAnalyzerForExtension(String extension, Analyzer analyzer) {
+        ANALYZERS.putIfAbsent(extension, analyzer);
     }
 
 }

@@ -129,7 +129,11 @@ public class JavaAnalyzer extends Analyzer {
     public void analyze(File file) {
         LOGGER.info(tl("processing", file.toPath()));
         for (FileAnalyzer analyzer : FILE_ANALYZERS) {
-            analyzer.analyze(file);
+            try {
+                analyzer.analyze(file);
+            } catch (Exception e) {
+                
+            }
         }
         LOGGER.info(tl("ja_gathering_class_nodes", file.toPath()));
         List<ClassNode> classNodes = new ArrayList<>();
