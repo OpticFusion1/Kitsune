@@ -24,7 +24,7 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 > You can either download it from [releases](https://github.com/OpticFusion1/Kitsune/releases) or [build](#build) it yourself.
 >
 > Once you have obtained your Kitsune.jar run it using `java -jar Kitsune.jar`
->
+
 > [!TIP]  
 > If you want the latest stable version, I strongly recommend [releases](https://github.com/OpticFusion1/Kitsune/releases)
 
