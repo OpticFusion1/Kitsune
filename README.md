@@ -1,7 +1,7 @@
 # Kitsune
 Kitsune is a program that allows one to easily reverse engineer or analyze a limited set of languages.
 
-> [!IMPORTANT]  
+> [!TIP]  
 > Java 17 or higher must be installed.
 
 ## Supported Languages
