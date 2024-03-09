@@ -47,6 +47,11 @@
 > 3. $ mvn clean install
 > ```
 
+## Contact
+> - Discord - [Optic_Fusion1 Support](https://discord.gg/jMEsq4zHVA)
+> 
+> Project Link: https://github.com/OpticFusion1/Kitsune/
+
 ## Preview
 
 > [!NOTE]  
@@ -55,5 +60,3 @@
 ![unknown](https://user-images.githubusercontent.com/37254722/196303016-d5de5e7c-e16a-4caa-92a5-f34d0cc5baa5.png)
 ![unknown](https://user-images.githubusercontent.com/37254722/196303029-3f5719f7-20a2-47ba-ae71-7f50f3fe2add.png)
 ![unknown2](https://user-images.githubusercontent.com/37254722/196303030-6d7eec9a-94be-44a0-b01b-d65b4a846f76.png)
-
-## Contact
