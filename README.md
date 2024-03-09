@@ -14,8 +14,8 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 > To use Kitsune to its full extent, it's important to know all available commands and when to use them. 
 >
 >
-> > [!TIP]  
-> > All commands can be found in the [wiki](https://github.com/OpticFusion1/Kitsune/wiki)  
+[!TIP]  
+All commands can be found in the [wiki](https://github.com/OpticFusion1/Kitsune/wiki)  
 
 ## Run
 > Download a compiled jar or build it from source and then run it using `java -jar Kitsune.jar`
