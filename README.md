@@ -34,16 +34,16 @@ Once you have obtained your Kitsune.jar run it using `java -jar Kitsune.jar`
 > If you want the latest stable version, I strongly recommend [releases](https://github.com/OpticFusion1/Kitsune/releases)
 
 ## Build
-> #### To build Kitsune from source, run the following commands:
-> ```
-> 1. $ git clone git@github.com:OpticFusion1/Kitsune
-> ```
-> ```
-> 2. $ cd Kitsune/
-> ```
-> ```
-> 3. $ mvn clean install
-> ```
+#### To build Kitsune from source, run the following commands:
+```
+1. $ git clone git@github.com:OpticFusion1/Kitsune
+```
+```
+2. $ cd Kitsune/
+```
+```
+3. $ mvn clean install
+```
 
 ## Contact
 Discord · [Optic_Fusion1 Support](https://discord.gg/jMEsq4zHVA)
