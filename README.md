@@ -36,13 +36,11 @@ Once you have obtained your Kitsune.jar run it using `java -jar Kitsune.jar`
 ## Build
 #### To build Kitsune from source, run the following commands:
 ```
-1. $ git clone git@github.com:OpticFusion1/Kitsune
-```
-```
-2. $ cd Kitsune/
-```
-```
-3. $ mvn clean install
+$ git clone git@github.com:OpticFusion1/Kitsune
+
+$ cd Kitsune/
+
+$ mvn clean install
 ```
 
 ## Contact
