@@ -1,7 +1,8 @@
 # Kitsune
 Kitsune is a program that allows one to easily reverse engineer or analyze a limited set of languages.
 
-[!IMPORTANT] Java 17 or higher must be installed.
+> [!IMPORTANT]  
+> Java 17 or higher must be installed.
 
 ## Supported Languages
 > Java, VBScript (Limited Support), and HTML.
@@ -11,8 +12,9 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 ## Usage
 >
 > To use Kitsune to its full extent, it's important to know all available commands and when to use them. 
-> 
-> [!TIP] All commands can be found in the [wiki](https://github.com/OpticFusion1/Kitsune/wiki)  
+>
+> [!TIP]  
+> All commands can be found in the [wiki](https://github.com/OpticFusion1/Kitsune/wiki)  
 
 ## Run
 > Download a compiled jar or build it from source and then run it using `java -jar Kitsune.jar`
@@ -21,7 +23,8 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 > You can either download it from [releases](https://github.com/OpticFusion1/Kitsune/releases) or [build](#build) it yourself.
 >
 > Once you have obtained your Kitsune.jar run it using `java -jar Kitsune.jar`
-> > [!TIP] If you want the latest stable version, I strongly recommend [releases](https://github.com/OpticFusion1/Kitsune/releases)
+> > [!TIP]  
+> > If you want the latest stable version, I strongly recommend [releases](https://github.com/OpticFusion1/Kitsune/releases)
 
 ## Build
 > #### To build Kitsune from source, run the following commands:
@@ -37,7 +40,8 @@ Kitsune is a program that allows one to easily reverse engineer or analyze a lim
 
 ## Preview
 
-> [!NOTE] This is a preview output generated using the command `analyze <file>`
+> [!NOTE]  
+> This is a preview output generated using the command `analyze <file>`
 
 ![unknown](https://user-images.githubusercontent.com/37254722/196303016-d5de5e7c-e16a-4caa-92a5-f34d0cc5baa5.png)
 ![unknown](https://user-images.githubusercontent.com/37254722/196303029-3f5719f7-20a2-47ba-ae71-7f50f3fe2add.png)
