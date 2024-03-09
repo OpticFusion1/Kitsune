@@ -3,15 +3,12 @@
 <h1>Kitsune</h1>
 <p>Kitsune is a program that allows one to easily reverse engineer or analyze a limited set of languages.</p>
 
-<p>created and maintained by <a href="https://github.com/OpticFusion1">OpticFusion1</a></p>
+<p>Created and maintained by <a href="https://github.com/OpticFusion1">OpticFusion1</a>!</p>
 
 <h4> <span> · </span> <a href="https://github.com/OpticFusion1/Kitsune/wiki"> Wiki </a> <span> · </span> <a href="https://github.com/OpticFusion1/Kitsune/issues"> Report Bug </a> <span> · </span> <a href="https://github.com/OpticFusion1/Kitsune/issues"> Request Feature </a> </h4>
-
-
+<br>
+<p> ❗ <strong> IMPORTANT!</strong> Java 17 or higher must be installed. ❗ </p>
 </div>
-
-> [!IMPORTANT]  
-> Java 17 or higher must be installed.
 
 ## Supported Languages
 > Java, VBScript (Limited Support), and HTML.
