@@ -7,7 +7,7 @@
 
 <h4> <a href="https://github.com/OpticFusion1/Kitsune/wiki"> Wiki </a> <span> · </span> <a href="https://github.com/OpticFusion1/Kitsune/issues"> Report Bug </a> <span> · </span> <a href="https://github.com/OpticFusion1/Kitsune/issues"> Request Feature </a> </h4>
 <br>
-<p> ❗ <strong> IMPORTANT!</strong> Java 17 or higher must be installed. ❗ </p>
+<p> ❗ <strong> IMPORTANT!</strong> ☕ Java 17 or higher must be installed. ❗ </p>
 </div>
 
 ## Supported Languages
